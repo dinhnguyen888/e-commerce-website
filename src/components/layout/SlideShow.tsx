@@ -5,14 +5,7 @@ import type { CarouselRef } from "antd/es/carousel";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import Image from "next/image";
 
-function SlideShow() {
-    const images = [
-        "https://picsum.photos/800/800?image=1",
-        "https://picsum.photos/800/800?image=2",
-        "https://picsum.photos/800/800?image=3",
-        "https://picsum.photos/800/800?image=4",
-    ];
-
+function SlideShow({ images }: { images: string[] }) {
     const carouselRef = React.useRef<CarouselRef>(null);
 
     const next = () => {
@@ -30,7 +23,7 @@ function SlideShow() {
                 ref={carouselRef}
                 dots={true}
                 effect="fade"
-                autoplaySpeed={3000}
+                autoplaySpeed={5000}
                 pauseOnHover={false}
                 className="h-full"
             >

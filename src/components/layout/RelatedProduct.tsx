@@ -1,5 +1,5 @@
 import { Card } from "antd";
-import { RelatedProduct } from "@/app/types/Product";
+import { RelatedProduct } from "../../types/Product";
 import Image from "next/image";
 interface RelatedProductsProps {
     products: RelatedProduct[];

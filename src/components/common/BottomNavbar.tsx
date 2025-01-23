@@ -51,7 +51,7 @@ const BottomNavbar: React.FC = () => {
     );
 
     return (
-        <nav className="sticky top-0 left-0 right-0 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-600 z-50">
+        <nav className="sticky top-0 left-0 right-0 bg-white border-b border-gray-200 dark:bg-gray-700 dark:border-gray-600 z-50">
             <div className="max-w-screen-xl mx-auto px-4">
                 <div className="flex items-center justify-around h-12">
                     {/* Regular nav buttons */}
