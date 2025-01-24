@@ -39,6 +39,14 @@ function HomePage() {
         loadProducts();
     }, []);
 
+    const handleContact = () => {
+        alert("Contact feature is not implemented yet!");
+    };
+
+    const handleAddToCart = () => {
+        alert("Add to cart feature is not implemented yet!");
+    };
+
     if (isLoading) {
         return <div>Loading products...</div>;
     }
@@ -57,7 +65,11 @@ function HomePage() {
             <h1 className="text-3xl font-lucida font-bold z-20 text-black text-center my-11">
                 Đồ án đê, mại zô mại zôoooo
             </h1>
-            <ListProduct initialProducts={initialProducts} />
+            <ListProduct
+                initialProducts={initialProducts}
+                onContact={handleContact}
+                onAddToCart={handleAddToCart}
+            />
         </div>
     );
 }

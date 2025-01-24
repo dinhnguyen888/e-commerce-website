@@ -1,51 +1,41 @@
 "use client";
 import React, { useState } from "react";
-import { Dropdown } from "antd";
-import type { MenuProps } from "antd";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
+import { Category } from "@/types/Category";
 
-interface NavItem {
-    key: string;
-    label: string;
-    onClick?: () => void;
+interface BottomNavbarProps {
+    categories: Category[];
 }
 
-const BottomNavbar: React.FC = () => {
-    const [isCreateOpen, setIsCreateOpen] = useState(false);
+const BottomNavbar: React.FC<BottomNavbarProps> = ({ categories }) => {
+    const [hoveredDropdown, setHoveredDropdown] = useState<string | null>(null);
 
-    const menuItems: MenuProps["items"] = [
-        {
-            key: "1",
-            label: "New Repository",
-            onClick: () => console.log("New Repository clicked"),
-        },
-        {
-            key: "2",
-            label: "Import Repository",
-            onClick: () => console.log("Import Repository clicked"),
-        },
-        {
-            key: "3",
-            label: "New Gist",
-            onClick: () => console.log("New Gist clicked"),
-        },
-    ];
+    // Nhóm các category theo blockName
+    const categorized = categories.reduce((acc, category) => {
+        if (category.blockName) {
+            if (!acc[category.blockName]) acc[category.blockName] = [];
+            acc[category.blockName].push(category);
+        } else {
+            acc[category.id] = [category]; // Nếu không có blockName thì xem như category độc lập
+        }
+        return acc;
+    }, {} as { [key: string]: Category[] });
 
-    const navItems: NavItem[] = [
-        { key: "home", label: "Home" },
-        { key: "discover", label: "Discover" },
-        { key: "pullRequests", label: "Pull Requests" },
-        { key: "issues", label: "Issues" },
-    ];
+    const handleMouseEnter = (blockName: string) => {
+        setHoveredDropdown(blockName);
+    };
 
-    const renderNavButton = ({ key, label, onClick }: NavItem) => (
+    const handleMouseLeave = () => {
+        setHoveredDropdown(null);
+    };
+
+    const renderNavButton = (category: Category) => (
         <button
-            key={key}
-            onClick={onClick}
-            className="inline-flex flex-col items-center justify-center px-3 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+            key={category.id}
+            className="inline-flex flex-col items-center justify-center px-3 h-12 hover:bg-blue-50 dark:hover:bg-blue-900/30"
         >
             <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400">
-                {label}
+                {category.categoryName || "Unnamed"}
             </span>
         </button>
     );
@@ -54,31 +44,55 @@ const BottomNavbar: React.FC = () => {
         <nav className="sticky top-0 left-0 right-0 bg-white border-b border-gray-200 dark:bg-gray-700 dark:border-gray-600 z-50">
             <div className="max-w-screen-xl mx-auto px-4">
                 <div className="flex items-center justify-around h-12">
-                    {/* Regular nav buttons */}
-                    {navItems.slice(0, 2).map(renderNavButton)}
+                    {/* Render categories */}
+                    {Object.keys(categorized).map((blockName) => {
+                        const items = categorized[blockName];
+                        if (items.length === 1 && !items[0].blockName) {
+                            // Render nút đơn nếu không có blockName
+                            return renderNavButton(items[0]);
+                        }
 
-                    {/* Create Dropdown */}
-                    <Dropdown
-                        menu={{ items: menuItems }}
-                        trigger={["click"]}
-                        placement="bottom"
-                        open={isCreateOpen}
-                        onOpenChange={setIsCreateOpen}
-                    >
-                        <button className="inline-flex flex-col items-center justify-center px-3 hover:bg-blue-50 dark:hover:bg-blue-900/30">
-                            <span className="inline-flex items-center gap-1 text-sm font-semibold text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400">
-                                Create
-                                {isCreateOpen ? (
-                                    <FiChevronUp className="w-4 h-4" />
-                                ) : (
-                                    <FiChevronDown className="w-4 h-4" />
-                                )}
-                            </span>
-                        </button>
-                    </Dropdown>
-
-                    {/* Remaining nav buttons */}
-                    {navItems.slice(2).map(renderNavButton)}
+                        return (
+                            <div
+                                key={blockName}
+                                className="relative h-12"
+                                onMouseEnter={() => handleMouseEnter(blockName)}
+                                onMouseLeave={handleMouseLeave}
+                            >
+                                <button className="inline-flex flex-col items-center justify-center px-3 h-12 hover:bg-blue-50 dark:hover:bg-blue-900/30">
+                                    <span className="inline-flex items-center gap-1 text-sm font-semibold text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400">
+                                        {blockName}
+                                        {hoveredDropdown === blockName ? (
+                                            <FiChevronUp className="w-4 h-4" />
+                                        ) : (
+                                            <FiChevronDown className="w-4 h-4" />
+                                        )}
+                                    </span>
+                                </button>
+                                <div
+                                    className={`absolute left-0 w-48 bg-white border rounded-b-lg shadow-lg dark:bg-gray-700 dark:border-gray-600 transform transition-all duration-300 ease-in-out ${
+                                        hoveredDropdown === blockName
+                                            ? "opacity-100 scale-100 translate-y-0"
+                                            : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
+                                    }`}
+                                >
+                                    {items.map((item) => (
+                                        <button
+                                            key={item.id}
+                                            onClick={() =>
+                                                console.log(
+                                                    `Clicked ${item.categoryName}`
+                                                )
+                                            }
+                                            className="block w-full px-4 py-2 text-left text-sm text-gray-800 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+                                        >
+                                            {item.categoryName}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         </nav>

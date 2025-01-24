@@ -35,9 +35,10 @@ function ProductPage() {
     useEffect(() => {
         const fetchProduct = async () => {
             const response = await fetch(
-                "https://localhost:7202/api/Products/64eaddc2f3b1c5a01a0f3333"
+                "https://localhost:7202/api/Products/6792e88ea39ff2838f0faccf"
             );
             const data = await response.json();
+            console.log(data);
             setProduct(data);
         };
         fetchProduct();
