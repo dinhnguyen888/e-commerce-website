@@ -1,15 +1,20 @@
 import axios from "axios";
-import { PaginationProduct, Product } from "@/types/Product";
+import https from "https";
+import { PaginationProduct, Product, ProductDetail } from "@/types/Product";
 
 const BASE_URL = "https://localhost:7202/api/Products";
 
 class ProductService {
     private api = axios.create({
         baseURL: BASE_URL,
-        timeout: 5000,
+        timeout: 7000,
         headers: {
             "Content-Type": "application/json",
         },
+        // Bỏ qua kiểm tra SSL trong môi trường phát triển
+        httpsAgent: new https.Agent({
+            rejectUnauthorized: false,
+        }),
     });
 
     // Lấy tất cả sản phẩm với phân trang
@@ -32,9 +37,13 @@ class ProductService {
         return response.data;
     }
 
-    // Các phương thức khác giữ nguyên
     async getProductById(id: string): Promise<Product> {
         const response = await this.api.get(`/${id}`);
+        return response.data;
+    }
+
+    async getProductDetailById(id: string): Promise<ProductDetail> {
+        const response = await this.api.get(`/detail/${id}`);
         return response.data;
     }
 

@@ -7,12 +7,8 @@ import productService from "../../services/productService";
 
 function ListProduct({
     initialProducts,
-    onContact,
-    onAddToCart,
 }: {
     initialProducts: PaginationProduct;
-    onContact: () => void;
-    onAddToCart: () => void;
 }) {
     const [products, setProducts] =
         useState<PaginationProduct>(initialProducts);
@@ -39,7 +35,8 @@ function ListProduct({
             setIsLoading(false); // Ẩn trạng thái loading
         }
     };
-
+    const onContact = () => {};
+    const onAddToCart = () => {};
     const currentProducts = products.products;
 
     return (

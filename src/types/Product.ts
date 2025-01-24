@@ -3,16 +3,16 @@ export interface Product {
     id: string;
     title: string;
     price: number;
-    imageUrl: string;
-    tag: string | null;
     category: string;
+    tag: string;
+    imageUrl: string;
     createdAt: string;
-    description?: string;
+    description: string;
 }
 
 // RelatedProduct Interface
 export interface RelatedProduct {
-    id: number;
+    id: string;
     name: string;
     price: number;
     image: string;
@@ -20,9 +20,22 @@ export interface RelatedProduct {
 
 // PaginationProduct Interface
 export interface PaginationProduct {
-    currentPage: number; // Trang hiện tại
-    pageSize: number; // Số sản phẩm trên mỗi trang
-    totalProducts: number; // Tổng số sản phẩm
-    totalPages: number; // Tổng số trang
-    products: Product[]; // Danh sách sản phẩm cho trang hiện tại
+    currentPage: number;
+    pageSize: number;
+    totalProducts: number;
+    totalPages: number;
+    products: Product[];
+}
+
+// ProductDetail Interface
+export interface ProductDetail {
+    id: string;
+    title: string;
+    price: number;
+    category: string;
+    specification: string;
+    tag: string;
+    imageUrls: string[];
+    createdAt: string;
+    descriptionDetail: string; // Thêm chi tiết mô tả mới từ backend
 }
