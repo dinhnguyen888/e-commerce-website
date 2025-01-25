@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
+import { useRouter } from "next/navigation"; // Sử dụng router của Next.js
 import { Category } from "@/types/Category";
 
 interface BottomNavbarProps {
@@ -8,7 +9,8 @@ interface BottomNavbarProps {
 }
 
 const BottomNavbar: React.FC<BottomNavbarProps> = ({ categories }) => {
-    const [hoveredDropdown, setHoveredDropdown] = useState<string | null>(null);
+    const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+    const router = useRouter();
 
     // Nhóm các category theo blockName
     const categorized = categories.reduce((acc, category) => {
@@ -16,23 +18,40 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({ categories }) => {
             if (!acc[category.blockName]) acc[category.blockName] = [];
             acc[category.blockName].push(category);
         } else {
-            acc[category.id] = [category]; // Nếu không có blockName thì xem như category độc lập
+            acc[category.id] = [category];
         }
         return acc;
     }, {} as { [key: string]: Category[] });
 
-    const handleMouseEnter = (blockName: string) => {
-        setHoveredDropdown(blockName);
+    // Hàm điều hướng
+    const handleClick = (endpoint: string) => {
+        if (endpoint) {
+            router.push(endpoint); // Điều hướng đến endpoint tương ứng
+        } else {
+            console.error("No frontendEndpoint provided");
+        }
     };
 
-    const handleMouseLeave = () => {
-        setHoveredDropdown(null);
+    // Đóng dropdown khi cuộn màn hình
+    useEffect(() => {
+        const handleScroll = () => setActiveDropdown(null);
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
+    // Hàm xử lý khi click vào blockName
+    const handleDropdownToggle = (blockName: string) => {
+        setActiveDropdown((prev) => (prev === blockName ? null : blockName));
     };
 
     const renderNavButton = (category: Category) => (
         <button
             key={category.id}
-            className="inline-flex flex-col items-center justify-center px-3 h-12 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+            className="inline-flex flex-col items-start justify-center px-3 h-12 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+            onClick={() => handleClick(category.frontendEndpoint)}
         >
             <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400">
                 {category.categoryName || "Unnamed"}
@@ -41,61 +60,64 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({ categories }) => {
     );
 
     return (
-        <nav className="sticky top-0 left-0 right-0 bg-white border-b border-gray-200 dark:bg-gray-700 dark:border-gray-600 z-50">
-            <div className="max-w-screen-xl mx-auto px-4">
-                <div className="flex items-center justify-around h-12">
-                    {/* Render categories */}
-                    {Object.keys(categorized).map((blockName) => {
-                        const items = categorized[blockName];
-                        if (items.length === 1 && !items[0].blockName) {
-                            // Render nút đơn nếu không có blockName
-                            return renderNavButton(items[0]);
-                        }
+        <div className="top-0 left-0 right-0 sticky z-50">
+            <nav className="bg-white border-b border-gray-200 dark:bg-gray-700 dark:border-gray-600">
+                <div className="max-w-screen-xl mx-auto px-4">
+                    <div className="flex flex-row h-12">
+                        {Object.keys(categorized).map((blockName) => {
+                            const items = categorized[blockName];
 
-                        return (
-                            <div
-                                key={blockName}
-                                className="relative h-12"
-                                onMouseEnter={() => handleMouseEnter(blockName)}
-                                onMouseLeave={handleMouseLeave}
-                            >
-                                <button className="inline-flex flex-col items-center justify-center px-3 h-12 hover:bg-blue-50 dark:hover:bg-blue-900/30">
-                                    <span className="inline-flex items-center gap-1 text-sm font-semibold text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400">
-                                        {blockName}
-                                        {hoveredDropdown === blockName ? (
-                                            <FiChevronUp className="w-4 h-4" />
-                                        ) : (
-                                            <FiChevronDown className="w-4 h-4" />
-                                        )}
-                                    </span>
-                                </button>
-                                <div
-                                    className={`absolute left-0 w-48 bg-white border rounded-b-lg shadow-lg dark:bg-gray-700 dark:border-gray-600 transform transition-all duration-300 ease-in-out ${
-                                        hoveredDropdown === blockName
-                                            ? "opacity-100 scale-100 translate-y-0"
-                                            : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
-                                    }`}
-                                >
-                                    {items.map((item) => (
-                                        <button
-                                            key={item.id}
-                                            onClick={() =>
-                                                console.log(
-                                                    `Clicked ${item.categoryName}`
-                                                )
-                                            }
-                                            className="block w-full px-4 py-2 text-left text-sm text-gray-800 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-blue-900/30"
-                                        >
-                                            {item.categoryName}
-                                        </button>
-                                    ))}
+                            // Nếu chỉ có một category và không có blockName, render như nút bình thường
+                            if (items.length === 1 && !items[0].blockName) {
+                                return renderNavButton(items[0]);
+                            }
+
+                            // Nếu có nhiều category trong blockName
+                            return (
+                                <div key={blockName} className="relative h-12">
+                                    <button
+                                        className="inline-flex flex-col items-start justify-center px-3 h-12 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+                                        onClick={() =>
+                                            handleDropdownToggle(blockName)
+                                        }
+                                    >
+                                        <span className="inline-flex items-center gap-1 text-sm font-semibold text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400">
+                                            {blockName}
+                                            {activeDropdown === blockName ? (
+                                                <FiChevronUp className="w-4 h-4" />
+                                            ) : (
+                                                <FiChevronDown className="w-4 h-4" />
+                                            )}
+                                        </span>
+                                    </button>
+                                    <div
+                                        className={`absolute left-0 w-48 bg-white border rounded-b-lg shadow-lg dark:bg-gray-700 dark:border-gray-600 transform transition-all duration-300 ease-in-out ${
+                                            activeDropdown === blockName
+                                                ? "opacity-100 scale-100 translate-y-0"
+                                                : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
+                                        }`}
+                                    >
+                                        {items.map((item) => (
+                                            <button
+                                                key={item.id}
+                                                onClick={() =>
+                                                    handleClick(
+                                                        item.frontendEndpoint
+                                                    )
+                                                }
+                                                className="block w-full px-4 py-2 text-left text-sm text-gray-800 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+                                            >
+                                                {item.categoryName}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </div>
     );
 };
 

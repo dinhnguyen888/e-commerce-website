@@ -16,9 +16,7 @@ function ListProduct({
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const pageSize = products.pageSize;
-    const handleClickProduct = (id: string) => {
-        window.location.href = `/do-an/${id}`;
-    };
+
     const handlePageChange = async (page: number) => {
         setCurrentPage(page); // Cập nhật trang hiện tại
         setIsLoading(true); // Hiển thị trạng thái loading
@@ -48,12 +46,9 @@ function ListProduct({
                     {/* Grid Container */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {currentProducts.map((product) => (
-                            <div
-                                key={product.id}
-                                className="w-full"
-                                onClick={() => handleClickProduct(product.id)}
-                            >
+                            <div key={product.id} className="w-full">
                                 <Card
+                                    id={product.id}
                                     image={product.imageUrl}
                                     title={product.title}
                                     price={product.price}

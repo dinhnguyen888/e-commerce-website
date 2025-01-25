@@ -60,19 +60,16 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
             </div>
 
             {specifications && (
-                <div className="mt-6 border-t pt-4">
-                    <h3 className="text-lg font-semibold mb-3">
-                        Specifications
-                    </h3>
-                    <div className="grid grid-cols-2 gap-y-2">
-                        {Object.entries(specifications).map(([key, value]) => (
-                            <div key={key} className="flex gap-2">
-                                <span className="text-gray-600">{key}:</span>
-                                <span className="font-medium">{value}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <ul className="mt-6 border-t pt-4 space-y-2">
+                    {Object.entries(specifications).map(([key, value]) => (
+                        <li key={key} className="flex gap-2 w-full">
+                            <span className="text-gray-600 font-bold ">
+                                {key}:
+                            </span>
+                            <span className="font-medium">{value}</span>
+                        </li>
+                    ))}
+                </ul>
             )}
         </div>
     );

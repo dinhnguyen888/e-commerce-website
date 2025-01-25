@@ -1,17 +1,12 @@
 // app/page.tsx
 
+import BannerServiceInstance from "@/services/bannerService";
 import ListProduct from "../components/layout/ListProduct";
 import SlideShow from "../components/layout/SlideShow";
 import productService from "../services/productService";
 
 export default async function HomePage() {
-    const images = [
-        "https://picsum.photos/800/800?image=1",
-        "https://picsum.photos/800/800?image=2",
-        "https://picsum.photos/800/800?image=3",
-        "https://picsum.photos/800/800?image=4",
-    ];
-
+    const images = await BannerServiceInstance.getAllBanner();
     const initialProducts = await productService.getAllProducts(1, 12, true);
 
     return (

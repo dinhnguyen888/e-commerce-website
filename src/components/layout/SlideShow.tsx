@@ -4,8 +4,9 @@ import { Carousel } from "antd";
 import type { CarouselRef } from "antd/es/carousel";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import Image from "next/image";
+import { Banner } from "@/types/Banner";
 
-function SlideShow({ images }: { images: string[] }) {
+function SlideShow({ images }: { images: Banner[] }) {
     const carouselRef = React.useRef<CarouselRef>(null);
 
     const next = () => {
@@ -30,8 +31,8 @@ function SlideShow({ images }: { images: string[] }) {
                 {images.map((image, index) => (
                     <div key={index} className="h-full w-full">
                         <Image
-                            src={image}
-                            alt={`Slide ${index + 1}`}
+                            src={image.bannerUrl}
+                            alt={image.bannerName}
                             width={1920}
                             height={1080}
                             priority

@@ -4,6 +4,7 @@ import { ShoppingCartOutlined, PhoneOutlined } from "@ant-design/icons";
 import Image from "next/image";
 
 interface ProductCardProps {
+    id: string;
     image: string;
     title: string;
     tag: string;
@@ -11,8 +12,11 @@ interface ProductCardProps {
     onContact?: () => void;
     onAddToCart?: () => void;
 }
-
+const handleClickProduct = (id: string) => {
+    window.location.href = `/do-an/${id}`;
+};
 function Card({
+    id,
     image,
     title,
     tag,
@@ -31,12 +35,13 @@ function Card({
                     className="object-cover h-[200px] w-full"
                     width={400}
                     height={200}
+                    onClick={() => handleClickProduct(id)}
                 />
             }
             bodyStyle={{ padding: "12px" }}
         >
             {/* Nội dung */}
-            <div className="mb-3">
+            <div className="mb-3" onClick={() => handleClickProduct(id)}>
                 {/* Tiêu đề */}
                 <h3
                     className="text-lg font-bold overflow-hidden text-ellipsis whitespace-nowrap mb-2"

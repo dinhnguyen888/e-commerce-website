@@ -38,7 +38,7 @@ function ProductPage({ params }: { params: { id: string } }) {
                             name={product.title}
                             price={product.price}
                             specifications={{
-                                Feature: product.specification,
+                                "Tính năng": product.specification,
                             }}
                             onBuyNow={handleBuyNow}
                             onAddToCart={handleAddToCart}

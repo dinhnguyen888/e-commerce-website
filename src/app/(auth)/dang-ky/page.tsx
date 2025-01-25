@@ -5,6 +5,7 @@ import { Button, Form, Input } from "antd";
 interface RegisterFormValues {
     email: string;
     password: string;
+    confirmPassword: string;
     roleId: number;
 }
 
@@ -23,8 +24,8 @@ const RegisterPage: React.FC = () => {
     };
 
     return (
-        <div className="h-full flex items-center justify-center bg-gray-100 px-4 mt-4">
-            <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md my-28">
+        <div className="h-full flex items-center justify-center bg-gray-100 px-4 py-20">
+            <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md ">
                 {/* Header */}
                 <div className="text-center mb-6">
                     <h2 className="text-2xl font-bold text-gray-900">
@@ -75,10 +76,46 @@ const RegisterPage: React.FC = () => {
                                 message: "Mật khẩu phải có ít nhất 6 ký tự!",
                             },
                         ]}
+                        hasFeedback
                     >
                         <Input.Password
                             size="large"
                             placeholder="Nhập mật khẩu"
+                            className="rounded-lg"
+                        />
+                    </Form.Item>
+
+                    {/* Confirm Password Field */}
+                    <Form.Item
+                        label="Xác nhận mật khẩu"
+                        name="confirmPassword"
+                        dependencies={["password"]}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Vui lòng xác nhận mật khẩu!",
+                            },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (
+                                        !value ||
+                                        getFieldValue("password") === value
+                                    ) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(
+                                        new Error(
+                                            "Mật khẩu xác nhận không khớp!"
+                                        )
+                                    );
+                                },
+                            }),
+                        ]}
+                        hasFeedback
+                    >
+                        <Input.Password
+                            size="large"
+                            placeholder="Nhập lại mật khẩu"
                             className="rounded-lg"
                         />
                     </Form.Item>
