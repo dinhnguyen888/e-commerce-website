@@ -8,16 +8,17 @@ interface LoginFormValues {
     password: string;
 }
 
-function LoginPage() {
+const LoginPage: React.FC = () => {
     const onFinish = (values: LoginFormValues) => {
         console.log("Success:", values);
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-            <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-lg">
-                <div className="text-center">
-                    <h2 className="text-3xl font-bold text-gray-900">
+        <div className="h-full flex items-center justify-center bg-gray-100 px-4">
+            <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md my-20">
+                {/* Header */}
+                <div className="text-center mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900">
                         Đăng nhập
                     </h2>
                     <p className="mt-2 text-sm text-gray-600">
@@ -25,9 +26,9 @@ function LoginPage() {
                     </p>
                 </div>
 
+                {/* Form */}
                 <Form
                     name="login"
-                    className="mt-8 space-y-6"
                     initialValues={{ remember: true }}
                     onFinish={onFinish}
                     layout="vertical"
@@ -43,7 +44,11 @@ function LoginPage() {
                             },
                         ]}
                     >
-                        <Input size="large" placeholder="Nhập email của bạn" />
+                        <Input
+                            size="large"
+                            placeholder="Nhập email của bạn"
+                            className="rounded-lg"
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -59,6 +64,7 @@ function LoginPage() {
                         <Input.Password
                             size="large"
                             placeholder="Nhập mật khẩu"
+                            className="rounded-lg"
                         />
                     </Form.Item>
 
@@ -66,14 +72,15 @@ function LoginPage() {
                         <Button
                             type="primary"
                             htmlType="submit"
-                            className="w-full bg-blue-600 hover:bg-blue-700"
                             size="large"
+                            className="w-full rounded-lg bg-blue-600 hover:bg-blue-700"
                         >
                             Đăng nhập
                         </Button>
                     </Form.Item>
 
-                    <div className="relative">
+                    {/* Divider */}
+                    <div className="relative my-4">
                         <div className="absolute inset-0 flex items-center">
                             <div className="w-full border-t border-gray-300"></div>
                         </div>
@@ -84,12 +91,12 @@ function LoginPage() {
                         </div>
                     </div>
 
+                    {/* Github Login */}
                     <Button
                         icon={<GithubOutlined />}
                         size="large"
-                        className="w-full flex items-center justify-center"
+                        className="w-full flex items-center justify-center rounded-lg"
                         onClick={() => {
-                            // Xử lý đăng nhập với Github
                             console.log("Github login");
                         }}
                     >
@@ -99,6 +106,6 @@ function LoginPage() {
             </div>
         </div>
     );
-}
+};
 
 export default LoginPage;

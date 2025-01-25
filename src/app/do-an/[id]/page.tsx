@@ -5,7 +5,7 @@ import { ProductImages } from "../../../components/layout/ProductImages";
 import { ProductInfo } from "../../../components/layout/ProductInfo";
 import { ProductDescription } from "../../../components/layout/ProductDescription";
 import { RelatedProducts } from "../../../components/layout/RelatedProduct";
-import { RelatedProduct, ProductDetail } from "../../../types/Product";
+import { ProductDetail } from "../../../types/Product";
 import productServiceInstance from "@/services/productService";
 
 function ProductPage({ params }: { params: { id: string } }) {
@@ -28,27 +28,6 @@ function ProductPage({ params }: { params: { id: string } }) {
         fetchProduct();
     }, [params.id]);
 
-    const relatedProducts: RelatedProduct[] = [
-        {
-            id: "1",
-            name: "Related Product 1",
-            price: 799,
-            image: "https://picsum.photos/200/200?image=5",
-        },
-        {
-            id: "2",
-            name: "Related Product 2",
-            price: 899,
-            image: "https://picsum.photos/200/200?image=6",
-        },
-        {
-            id: "3",
-            name: "Related Product 3",
-            price: 699,
-            image: "https://picsum.photos/200/200?image=7",
-        },
-    ];
-
     return (
         <div className="container mx-auto px-4 py-8 max-w-7xl">
             {product && (
@@ -70,10 +49,7 @@ function ProductPage({ params }: { params: { id: string } }) {
                         <ProductDescription
                             description={product.descriptionDetail}
                         />
-                        <RelatedProducts
-                            products={relatedProducts}
-                            onProductClick={handleRelatedProductClick}
-                        />
+                        <RelatedProducts />
                     </div>
                 </>
             )}
@@ -90,10 +66,6 @@ function ProductPage({ params }: { params: { id: string } }) {
 
     function handleContact() {
         console.log("Contact clicked");
-    }
-
-    function handleRelatedProductClick(productId: number) {
-        console.log("Related product clicked:", productId);
     }
 }
 

@@ -26,8 +26,8 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
         <div className="bg-white p-6 rounded-xl shadow-sm space-y-6">
             <div className="border-b pb-4">
                 <h1 className="text-3xl font-bold text-gray-800">{name}</h1>
-                <p className="text-3xl text-red-600 font-semibold mt-4">
-                    ${price.toLocaleString()}
+                <p className="text-3xl text-red-600 font-sans font-bold mt-4">
+                    {price.toLocaleString()}đ
                 </p>
             </div>
 

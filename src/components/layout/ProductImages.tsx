@@ -7,33 +7,30 @@ interface ProductImagesProps {
 
 export const ProductImages: React.FC<ProductImagesProps> = ({ images }) => {
     const [currentImage, setCurrentImage] = useState(0);
-    const [isTransitioning, setIsTransitioning] = useState(false);
 
     const handleImageChange = (index: number) => {
-        if (currentImage === index) return;
-        setIsTransitioning(true);
-        setTimeout(() => {
+        if (currentImage !== index) {
             setCurrentImage(index);
-            setIsTransitioning(false);
-        }, 100);
+        }
     };
 
     return (
         <div className="relative bg-white p-4 rounded-xl shadow-sm">
             {/* Hình ảnh chính */}
-            <div
-                className={`aspect-square relative overflow-hidden rounded-lg transition-opacity duration-300 ${
-                    isTransitioning ? "opacity-0" : "opacity-100"
-                }`}
-            >
-                <Image
-                    src={images[currentImage]}
-                    alt={`Product image ${currentImage + 1}`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority={currentImage === 0}
-                />
+            <div className="relative aspect-square w-full overflow-hidden rounded-lg">
+                {images.map((image, index) => (
+                    <Image
+                        key={index}
+                        src={image}
+                        alt={`Product image ${index + 1}`}
+                        fill
+                        className={`absolute transition-opacity duration-500 object-cover ${
+                            currentImage === index ? "opacity-100" : "opacity-0"
+                        }`}
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        priority={index === 0}
+                    />
+                ))}
             </div>
 
             {/* Hình ảnh thu nhỏ */}

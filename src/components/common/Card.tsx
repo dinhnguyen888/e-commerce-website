@@ -6,6 +6,7 @@ import Image from "next/image";
 interface ProductCardProps {
     image: string;
     title: string;
+    tag: string;
     price: number;
     onContact?: () => void;
     onAddToCart?: () => void;
@@ -14,6 +15,7 @@ interface ProductCardProps {
 function Card({
     image,
     title,
+    tag,
     price,
     onContact,
     onAddToCart,
@@ -21,43 +23,53 @@ function Card({
     return (
         <AntCard
             hoverable
+            className="flex flex-col justify-between h-full"
             cover={
                 <Image
                     alt={title}
                     src={image}
-                    style={{ objectFit: "cover" }}
+                    className="object-cover h-[200px] w-full"
                     width={400}
                     height={200}
                 />
             }
-            styles={{ body: { padding: "12px" } }}
+            bodyStyle={{ padding: "12px" }}
         >
-            <div style={{ marginBottom: "12px" }}>
-                <h3 style={{ margin: "0 0 8px 0" }}>{title}</h3>
-                <div
-                    style={{
-                        color: "#f50",
-                        fontSize: "18px",
-                        fontWeight: "bold",
-                    }}
+            {/* Nội dung */}
+            <div className="mb-3">
+                {/* Tiêu đề */}
+                <h3
+                    className="text-lg font-bold overflow-hidden text-ellipsis whitespace-nowrap mb-2"
+                    title={title}
                 >
+                    {title}
+                </h3>
+
+                {/* Tag */}
+                <div className="inline-block bg-cyan-600 text-white font-bold px-3 py-1 text-xs rounded-lg mb-2 font-sans">
+                    {tag}
+                </div>
+
+                {/* Giá */}
+                <div className="text-red-500 text-lg font-bold">
                     {price.toLocaleString("vi-VN")} đ
                 </div>
             </div>
 
-            <div style={{ display: "flex", gap: "8px" }}>
+            {/* Nút hành động */}
+            <div className="flex gap-2">
                 <Button
                     type="primary"
                     icon={<PhoneOutlined />}
                     onClick={onContact}
-                    block
+                    className="flex-1"
                 >
                     Liên hệ ngay
                 </Button>
                 <Button
                     icon={<ShoppingCartOutlined />}
                     onClick={onAddToCart}
-                    block
+                    className="flex-1"
                 >
                     Thêm vào giỏ
                 </Button>

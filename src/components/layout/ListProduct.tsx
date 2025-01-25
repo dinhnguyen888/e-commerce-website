@@ -57,6 +57,7 @@ function ListProduct({
                                     image={product.imageUrl}
                                     title={product.title}
                                     price={product.price}
+                                    tag={product.tag}
                                     onContact={onContact}
                                     onAddToCart={onAddToCart}
                                 />

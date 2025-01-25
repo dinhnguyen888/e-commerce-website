@@ -41,6 +41,10 @@ class ProductService {
         const response = await this.api.get(`/${id}`);
         return response.data;
     }
+    async getRelatedProduct(): Promise<Product[]> {
+        const response = await this.api.get(`/related`);
+        return response.data;
+    }
 
     async getProductDetailById(id: string): Promise<ProductDetail> {
         const response = await this.api.get(`/detail/${id}`);
