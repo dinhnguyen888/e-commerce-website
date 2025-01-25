@@ -1,3 +1,4 @@
+"use client";
 import { Card } from "antd";
 import { useState, useEffect } from "react";
 import { Product } from "../../types/Product";

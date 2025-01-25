@@ -1,7 +1,9 @@
 "use client";
-import React from "react";
-import { Button, Form, Input } from "antd";
+import React, { useState } from "react";
+import { Button, Form, Input, message } from "antd";
 import { GithubOutlined } from "@ant-design/icons";
+import AuthService from "@/services/authService";
+import useAuthStore from "@/stores/userStore";
 
 interface LoginFormValues {
     email: string;
@@ -9,14 +11,33 @@ interface LoginFormValues {
 }
 
 const LoginPage: React.FC = () => {
-    const onFinish = (values: LoginFormValues) => {
-        console.log("Success:", values);
+    const [loading, setLoading] = useState(false);
+    const { setTokens } = useAuthStore();
+
+    const onFinish = async (values: LoginFormValues) => {
+        try {
+            setLoading(true);
+            const response = await AuthService.login({
+                email: values.email,
+                password: values.password,
+            });
+            message.success("Đăng nhập thành công!");
+            console.log(response);
+            setTokens(response.accessToken, response.refreshToken);
+            window.location.href = "/";
+        } catch (error) {
+            message.error(
+                "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin."
+            );
+            console.error("Error not found:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <div className="h-full flex items-center justify-center bg-gray-100 px-4">
             <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md my-20">
-                {/* Header */}
                 <div className="text-center mb-6">
                     <h2 className="text-2xl font-bold text-gray-900">
                         Đăng nhập
@@ -25,8 +46,6 @@ const LoginPage: React.FC = () => {
                         Vui lòng đăng nhập để tiếp tục
                     </p>
                 </div>
-
-                {/* Form */}
                 <Form
                     name="login"
                     initialValues={{ remember: true }}
@@ -73,13 +92,13 @@ const LoginPage: React.FC = () => {
                             type="primary"
                             htmlType="submit"
                             size="large"
+                            loading={loading}
                             className="w-full rounded-lg bg-blue-600 hover:bg-blue-700"
                         >
                             Đăng nhập
                         </Button>
                     </Form.Item>
 
-                    {/* Divider */}
                     <div className="relative my-4">
                         <div className="absolute inset-0 flex items-center">
                             <div className="w-full border-t border-gray-300"></div>
@@ -91,7 +110,6 @@ const LoginPage: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Github Login */}
                     <Button
                         icon={<GithubOutlined />}
                         size="large"

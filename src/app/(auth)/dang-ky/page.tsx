@@ -1,26 +1,33 @@
 "use client";
-import React from "react";
-import { Button, Form, Input } from "antd";
+import React, { useState } from "react";
+import { Button, Form, Input, message } from "antd";
+import AuthService from "@/services/authService";
 
 interface RegisterFormValues {
     email: string;
     password: string;
     confirmPassword: string;
-    roleId: number;
 }
 
 const RegisterPage: React.FC = () => {
-    const onFinish = (values: Omit<RegisterFormValues, "roleId">) => {
-        // Add default roleId as 1 (user role)
-        const formData: RegisterFormValues = {
-            ...values,
-            roleId: 1,
-        };
+    const [loading, setLoading] = useState(false);
 
-        console.log("Form Submitted:", formData);
-
-        // Add your registration API logic here
-        // Example: axios.post("/api/register", formData);
+    const onFinish = async (values: RegisterFormValues) => {
+        try {
+            setLoading(true);
+            const response = await AuthService.register(
+                values.email,
+                values.password
+            );
+            message.success("Đăng ký thành công!");
+            console.log("Registration response:", response);
+            window.location.href = "/dang-nhap";
+        } catch (error) {
+            message.error("Đăng kí thất bại. Vui lòng kiểm tra lại thông tin.");
+            console.error("Error not found:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -126,6 +133,7 @@ const RegisterPage: React.FC = () => {
                             type="primary"
                             htmlType="submit"
                             size="large"
+                            loading={loading}
                             className="w-full rounded-lg bg-blue-600 hover:bg-blue-700"
                         >
                             Đăng ký

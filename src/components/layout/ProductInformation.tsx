@@ -1,3 +1,6 @@
+"use client";
+
+import React from "react";
 import { Button } from "antd";
 import {
     ShoppingCartOutlined,
@@ -5,23 +8,29 @@ import {
     DollarOutlined,
 } from "@ant-design/icons";
 
-interface ProductInfoProps {
+interface ProductInfoClientProps {
     name: string;
     price: number;
     specifications?: Record<string, string>;
-    onBuyNow?: () => void;
-    onAddToCart?: () => void;
-    onContact?: () => void;
 }
 
-export const ProductInfo: React.FC<ProductInfoProps> = ({
+const ProductInformation: React.FC<ProductInfoClientProps> = ({
     name,
     price,
     specifications,
-    onBuyNow,
-    onAddToCart,
-    onContact,
 }) => {
+    const handleBuyNow = () => {
+        console.log("Buy Now clicked");
+    };
+
+    const handleAddToCart = () => {
+        console.log("Add to Cart clicked");
+    };
+
+    const handleContact = () => {
+        console.log("Contact clicked");
+    };
+
     return (
         <div className="bg-white p-6 rounded-xl shadow-sm space-y-6">
             <div className="border-b pb-4">
@@ -36,7 +45,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
                     type="primary"
                     size="large"
                     icon={<DollarOutlined />}
-                    onClick={onBuyNow}
+                    onClick={handleBuyNow}
                     className="w-full h-12 text-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
                 >
                     Buy Now
@@ -44,7 +53,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
                 <Button
                     size="large"
                     icon={<ShoppingCartOutlined />}
-                    onClick={onAddToCart}
+                    onClick={handleAddToCart}
                     className="w-full h-12 text-lg border-blue-500 text-blue-500 hover:text-blue-600 hover:border-blue-600"
                 >
                     Add to Cart
@@ -52,7 +61,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
                 <Button
                     size="large"
                     icon={<PhoneOutlined />}
-                    onClick={onContact}
+                    onClick={handleContact}
                     className="w-full h-12 text-lg"
                 >
                     Contact
@@ -74,3 +83,5 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({
         </div>
     );
 };
+
+export default ProductInformation;
