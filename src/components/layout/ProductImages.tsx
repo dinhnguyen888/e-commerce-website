@@ -10,26 +10,24 @@ export const ProductImages: React.FC<ProductImagesProps> = ({ images }) => {
     const [currentImage, setCurrentImage] = useState(0);
 
     const handleImageChange = (index: number) => {
-        if (currentImage !== index) {
-            setCurrentImage(index);
-        }
+        setCurrentImage(index);
     };
 
     return (
         <div className="relative bg-white p-4 rounded-xl shadow-sm">
             {/* Hình ảnh chính */}
-            <div className="relative aspect-square w-full overflow-hidden rounded-lg">
+            <div className="relative w-full aspect-square overflow-hidden rounded-lg">
                 {images.map((image, index) => (
                     <Image
                         key={index}
                         src={image}
                         alt={`Product image ${index + 1}`}
                         fill
-                        className={`absolute transition-opacity duration-500 object-cover ${
+                        className={`absolute object-cover transition-opacity duration-500 ${
                             currentImage === index ? "opacity-100" : "opacity-0"
                         }`}
-                        sizes="(max-width: 768px) 100vw, 50vw"
                         priority={index === 0}
+                        sizes="(max-width: 768px) 100vw, 50vw"
                     />
                 ))}
             </div>
@@ -40,7 +38,7 @@ export const ProductImages: React.FC<ProductImagesProps> = ({ images }) => {
                     <button
                         key={index}
                         onClick={() => handleImageChange(index)}
-                        className={`flex-shrink-0 relative w-20 h-20 rounded-md overflow-hidden transition-all duration-200 ${
+                        className={`relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden transition-all duration-200 ${
                             currentImage === index
                                 ? "ring-2 ring-blue-500 scale-105"
                                 : "hover:ring-2 hover:ring-blue-300"

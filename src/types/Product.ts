@@ -39,3 +39,9 @@ export interface ProductDetail {
     createdAt: string;
     descriptionDetail: string; // Thêm chi tiết mô tả mới từ backend
 }
+export interface SearchResult {
+    id: string;
+    name: string;
+    imageUrl: string;
+    price: number;
+}

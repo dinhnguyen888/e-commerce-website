@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
-import { useRouter } from "next/navigation"; // Sử dụng router của Next.js
 import { Category } from "@/types/Category";
 
 interface BottomNavbarProps {
@@ -10,10 +9,17 @@ interface BottomNavbarProps {
 
 const BottomNavbar: React.FC<BottomNavbarProps> = ({ categories }) => {
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-    const router = useRouter();
+
+    // Chuẩn hóa dữ liệu categories để đảm bảo frontendEndpoint luôn là đường dẫn tuyệt đối
+    const normalizedCategories = categories.map((category) => ({
+        ...category,
+        frontendEndpoint: category.frontendEndpoint.startsWith("/")
+            ? category.frontendEndpoint
+            : `/${category.frontendEndpoint}`, // Thêm "/" nếu thiếu
+    }));
 
     // Nhóm các category theo blockName
-    const categorized = categories.reduce((acc, category) => {
+    const categorized = normalizedCategories.reduce((acc, category) => {
         if (category.blockName) {
             if (!acc[category.blockName]) acc[category.blockName] = [];
             acc[category.blockName].push(category);
@@ -23,16 +29,16 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({ categories }) => {
         return acc;
     }, {} as { [key: string]: Category[] });
 
-    // Hàm điều hướng
     const handleClick = (endpoint: string) => {
-        if (endpoint) {
-            router.push(endpoint); // Điều hướng đến endpoint tương ứng
-        } else {
-            console.error("No frontendEndpoint provided");
+        if (!endpoint.startsWith("/")) {
+            console.error(
+                `Invalid endpoint: ${endpoint} - Must start with '/'`
+            );
+            return;
         }
+        window.location.href = endpoint; // Điều hướng đến đường dẫn tuyệt đối
     };
 
-    // Đóng dropdown khi cuộn màn hình
     useEffect(() => {
         const handleScroll = () => setActiveDropdown(null);
         window.addEventListener("scroll", handleScroll);
@@ -60,7 +66,7 @@ const BottomNavbar: React.FC<BottomNavbarProps> = ({ categories }) => {
     );
 
     return (
-        <div className="top-0 left-0 right-0 sticky z-50">
+        <div className="top-0 left-0 right-0 sticky z-40">
             <nav className="bg-white border-b border-gray-200 dark:bg-gray-700 dark:border-gray-600">
                 <div className="max-w-screen-xl mx-auto px-4">
                     <div className="flex flex-row h-12">

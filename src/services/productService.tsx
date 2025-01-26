@@ -41,6 +41,7 @@ class ProductService {
         const response = await this.api.get(`/${id}`);
         return response.data;
     }
+
     async getRelatedProduct(): Promise<Product[]> {
         const response = await this.api.get(`/related`);
         return response.data;
@@ -63,6 +64,20 @@ class ProductService {
 
     async deleteProduct(id: string): Promise<void> {
         await this.api.delete(`/${id}`);
+    }
+
+    async searchProducts(keyword: string): Promise<Product[]> {
+        const response = await this.api.get(
+            `/search?keyword=${encodeURIComponent(keyword)}`
+        );
+        return response.data;
+    }
+
+    async getProductsByTag(tag: string): Promise<PaginationProduct[]> {
+        const response = await this.api.get(
+            `/tag?tag=${encodeURIComponent(tag)}`
+        );
+        return response.data;
     }
 }
 
