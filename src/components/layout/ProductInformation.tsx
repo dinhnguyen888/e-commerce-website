@@ -7,28 +7,49 @@ import {
     PhoneOutlined,
     DollarOutlined,
 } from "@ant-design/icons";
+import useAuthStore from "@/stores/userStore";
+import useCartStore from "@/stores/cartStore";
 
 interface ProductInfoClientProps {
     name: string;
     price: number;
     specifications?: Record<string, string>;
+    productId: string;
+    productName: string;
+    productDescription: string;
 }
 
 const ProductInformation: React.FC<ProductInfoClientProps> = ({
     name,
     price,
     specifications,
+    productId,
+    productName,
+    productDescription,
 }) => {
-    const handleBuyNow = () => {
-        console.log("Buy Now clicked");
-    };
+    const { getUserId } = useAuthStore();
+    const userId = getUserId() ?? ""; // Lấy userId từ store
+    const { addItem } = useCartStore();
 
-    const handleAddToCart = () => {
-        console.log("Add to Cart clicked");
+    const handleAddToCart = async () => {
+        try {
+            await addItem({
+                id: productId,
+                userId: userId,
+                productId: productId,
+                productName: productName,
+                productDescription: productDescription,
+                price: price,
+                addToCartAt: new Date().toISOString(),
+            });
+            // alert("Sản phẩm đã được thêm vào giỏ hàng!");
+        } catch (error) {
+            console.error("Error adding product to cart:", error);
+        }
     };
 
     const handleContact = () => {
-        console.log("Contact clicked");
+        window.open("https://www.facebook.com/nguyen.inh.869154/");
     };
 
     return (
@@ -45,7 +66,7 @@ const ProductInformation: React.FC<ProductInfoClientProps> = ({
                     type="primary"
                     size="large"
                     icon={<DollarOutlined />}
-                    onClick={handleBuyNow}
+                    onClick={() => console.log("Buy Now clicked")}
                     className="w-full h-12 text-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
                 >
                     Buy Now
@@ -72,7 +93,7 @@ const ProductInformation: React.FC<ProductInfoClientProps> = ({
                 <ul className="mt-6 border-t pt-4 space-y-2">
                     {Object.entries(specifications).map(([key, value]) => (
                         <li key={key} className="flex gap-2 w-full">
-                            <span className="text-gray-600 font-bold ">
+                            <span className="text-gray-600 font-bold">
                                 {key}:
                             </span>
                             <span className="font-medium">{value}</span>

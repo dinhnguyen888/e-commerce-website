@@ -37,6 +37,7 @@ export interface ProductDetail {
     tag: string;
     imageUrls: string[];
     createdAt: string;
+    description: string;
     descriptionDetail: string; // Thêm chi tiết mô tả mới từ backend
 }
 export interface SearchResult {

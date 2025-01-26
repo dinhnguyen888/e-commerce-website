@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import { Input, Button, Dropdown, Menu } from "antd";
 import {
-    ShoppingCartOutlined,
     LogoutOutlined,
     HistoryOutlined,
     UserOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
+import Cart from "../layout/Cart";
 
 interface SearchResult {
     id: string;
@@ -20,9 +20,9 @@ interface TopNavbarProps {
     isAuthenticated: boolean;
     avatarSrc?: string;
     username?: string;
+    userId: string;
     onLogout: () => void;
     onViewOrderHistory: () => void;
-    onCartClick: () => void;
     onViewProfile: () => void;
     onSearch: (query: string) => Promise<SearchResult[]>;
 }
@@ -33,9 +33,9 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
     username,
     onLogout,
     onViewOrderHistory,
-    onCartClick,
     onViewProfile,
     onSearch,
+    userId,
 }) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -158,12 +158,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
                     <div className="flex space-x-8 items-center">
                         {isAuthenticated ? (
                             <>
-                                <Button
-                                    type="primary"
-                                    shape="circle"
-                                    icon={<ShoppingCartOutlined />}
-                                    onClick={onCartClick}
-                                />
+                                <Cart userId={userId} />
                                 <Dropdown
                                     overlay={dropdownMenu}
                                     trigger={["click"]}

@@ -27,7 +27,7 @@ function Card({
     return (
         <AntCard
             hoverable
-            className="flex flex-col justify-between h-full bg-slate-200"
+            className="flex flex-col justify-between h-full bg-gray-100"
             cover={
                 <Image
                     alt={title}

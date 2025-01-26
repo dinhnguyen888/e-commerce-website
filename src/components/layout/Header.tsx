@@ -7,11 +7,17 @@ import productService from "@/services/productService";
 import { Category } from "@/types/Category";
 import useAuthStore from "@/stores/userStore";
 import { SearchResult } from "@/types/Product";
+import { jwtDecode } from "jwt-decode";
+
+interface DecodedToken {
+    userId: string;
+}
 
 function Header() {
     const [categories, setCategories] = useState<Category[]>([]);
-    const { accessToken, clearTokens } = useAuthStore();
-
+    const { accessToken, clearTokens, getUserId } = useAuthStore();
+    const userId = getUserId() ?? "";
+    // const [userId, setUserId] = useState<string>("");
     useEffect(() => {
         const fetchCategories = async () => {
             const categories = await categoryService.getAllCategories();
@@ -20,6 +26,19 @@ function Header() {
 
         fetchCategories();
     }, []);
+
+    useEffect(() => {
+        if (accessToken) {
+            try {
+                const decoded: DecodedToken = jwtDecode(accessToken); // Không cần `header: true`
+                console.log("Decoded token:", decoded); // Log toàn bộ token
+                // setUserId(decoded.userId); // Lưu userId vào state
+                console.log("UserId:", decoded.userId); // Log userId
+            } catch (error) {
+                console.error("Lỗi khi decode token:", error);
+            }
+        }
+    }, [accessToken]);
 
     const handleLogout = () => {
         clearTokens();
@@ -48,11 +67,12 @@ function Header() {
                 isAuthenticated={!!accessToken}
                 onLogout={handleLogout}
                 username="Nguyễn Văn A"
+                userId={userId}
                 onViewOrderHistory={() => console.log("Xem lịch sử mua hàng")}
                 onViewProfile={() => console.log("Xem thông tin cá nhân")}
-                onCartClick={() => console.log("Xem giỏ hàng")}
                 onSearch={handleSearch}
             />
+
             <BottomNavbar categories={categories} />
         </>
     );

@@ -3,12 +3,13 @@ import { ProductImages } from "../../../components/layout/ProductImages";
 import ProductInformation from "../../../components/layout/ProductInformation";
 import { ProductDescription } from "../../../components/layout/ProductDescription";
 import { RelatedProducts } from "../../../components/layout/RelatedProduct";
-
 import productServiceInstance from "@/services/productService";
 
-async function ProductPage({ params }: { params: { id: string } }) {
-    // const [product, setProduct] = useState<ProductDetail | null>(null);
-
+export default async function ProductPage({
+    params,
+}: {
+    params: { id: string };
+}) {
     const product = await productServiceInstance.getProductDetailById(
         params.id
     );
@@ -25,9 +26,12 @@ async function ProductPage({ params }: { params: { id: string } }) {
                             specifications={{
                                 "Tính năng": product.specification,
                             }}
+                            productId={product.id}
+                            productName={product.title}
+                            productDescription={product.description}
                         />
                     </div>
-                    <div className="grid grid-cols-1 mt-11  gap-8  text-green-400 font-lucida">
+                    <div className="grid grid-cols-1 mt-11 gap-8 text-green-400 font-lucida">
                         <ProductDescription
                             description={product.descriptionDetail}
                         />
@@ -38,5 +42,3 @@ async function ProductPage({ params }: { params: { id: string } }) {
         </div>
     );
 }
-
-export default ProductPage;

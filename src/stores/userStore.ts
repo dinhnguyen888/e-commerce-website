@@ -1,13 +1,20 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { jwtDecode } from "jwt-decode";
 
 interface AuthState {
     accessToken: string | null;
     refreshToken: string | null;
+    userId: string | null;
 
     setTokens: (accessToken: string, refreshToken: string) => void;
     clearTokens: () => void;
-    getToken: () => string | null;
+    getAccessToken: () => string | null;
+    getUserId: () => string | null;
+}
+
+interface DecodedToken {
+    userId: string;
 }
 
 const useAuthStore = create<AuthState>()(
@@ -15,23 +22,38 @@ const useAuthStore = create<AuthState>()(
         (set, get) => ({
             accessToken: null,
             refreshToken: null,
+            userId: null,
 
             setTokens: (accessToken, refreshToken) => {
-                set({
-                    accessToken,
-                    refreshToken,
-                });
+                try {
+                    const decoded: DecodedToken = jwtDecode(accessToken);
+                    const userId = decoded.userId;
+
+                    set({
+                        accessToken,
+                        refreshToken,
+                        userId,
+                    });
+                } catch (error) {
+                    console.error("Lỗi khi decode token:", error);
+                }
             },
 
             clearTokens: () =>
                 set({
                     accessToken: null,
                     refreshToken: null,
+                    userId: null,
                 }),
 
-            getToken: () => {
+            getAccessToken: () => {
                 const { accessToken } = get();
                 return accessToken;
+            },
+
+            getUserId: () => {
+                const { userId } = get();
+                return userId;
             },
         }),
         {
@@ -39,6 +61,7 @@ const useAuthStore = create<AuthState>()(
             partialize: (state) => ({
                 accessToken: state.accessToken,
                 refreshToken: state.refreshToken,
+                userId: state.userId,
             }),
         }
     )
