@@ -94,7 +94,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
         <Menu>
             <Menu.Item key="greeting" disabled>
                 <span>
-                    Xin chào, <b>{username || "Người dùng"}</b>
+                    Xin chào, <b>{username ?? "Người dùng"}</b>
                 </span>
             </Menu.Item>
             <Menu.Divider />

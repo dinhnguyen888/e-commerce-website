@@ -1,9 +1,11 @@
+// src/app/do-an/[id]/page.tsx
 import React from "react";
 import { ProductImages } from "../../../components/layout/ProductImages";
 import ProductInformation from "../../../components/layout/ProductInformation";
 import { ProductDescription } from "../../../components/layout/ProductDescription";
 import { RelatedProducts } from "../../../components/layout/RelatedProduct";
 import productServiceInstance from "@/services/productService";
+import FacebookComment from "@/components/common/FacebookComment";
 
 export default async function ProductPage({
     params,
@@ -37,6 +39,7 @@ export default async function ProductPage({
                         />
                         <RelatedProducts />
                     </div>
+                    <FacebookComment id={product.id} />
                 </>
             )}
         </div>

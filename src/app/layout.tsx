@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "../components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import Script from "next/script";
 
 // Thêm kiểu chữ Helvetica Neue
 const customFont = {
@@ -23,9 +24,15 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
+                // id="fb-root"
                 className={`${customFont.variable} antialiased`}
                 style={{ fontFamily: "Helvetica Neue, Arial, sans-serif" }}
             >
+                <Script
+                    src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v22.0"
+                    strategy="lazyOnload"
+                    crossOrigin="anonymous"
+                />
                 {header}
                 {children}
                 {footer}

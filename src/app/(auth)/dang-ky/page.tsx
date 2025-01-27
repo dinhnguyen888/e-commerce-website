@@ -6,6 +6,7 @@ import AuthService from "@/services/authService";
 interface RegisterFormValues {
     email: string;
     password: string;
+    name: string;
     confirmPassword: string;
 }
 
@@ -17,7 +18,8 @@ const RegisterPage: React.FC = () => {
             setLoading(true);
             const response = await AuthService.register(
                 values.email,
-                values.password
+                values.password,
+                values.name
             );
             message.success("Đăng ký thành công!");
             console.log("Registration response:", response);
@@ -68,7 +70,23 @@ const RegisterPage: React.FC = () => {
                             className="rounded-lg"
                         />
                     </Form.Item>
-
+                    <Form.Item
+                        label="Name"
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Vui lòng nhập tên!",
+                                type: "array",
+                            },
+                        ]}
+                    >
+                        <Input
+                            size="large"
+                            placeholder="Nhập tên của bạn"
+                            className="rounded-lg"
+                        />
+                    </Form.Item>
                     {/* Password Field */}
                     <Form.Item
                         label="Mật khẩu"

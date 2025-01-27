@@ -8,6 +8,8 @@ import { Category } from "@/types/Category";
 import useAuthStore from "@/stores/userStore";
 import { SearchResult } from "@/types/Product";
 import { jwtDecode } from "jwt-decode";
+import AccountServiceInstance from "@/services/accountService";
+import { Account } from "@/types/Account";
 
 interface DecodedToken {
     userId: string;
@@ -17,23 +19,43 @@ function Header() {
     const [categories, setCategories] = useState<Category[]>([]);
     const { accessToken, clearTokens, getUserId } = useAuthStore();
     const userId = getUserId() ?? "";
-    // const [userId, setUserId] = useState<string>("");
+    const [profile, setProfile] = useState<Account>();
+
+    // First useEffect for fetching categories and profile
     useEffect(() => {
         const fetchCategories = async () => {
-            const categories = await categoryService.getAllCategories();
-            setCategories(categories);
+            try {
+                const categories = await categoryService.getAllCategories();
+                setCategories(categories);
+            } catch (error) {
+                console.error("Lỗi khi lấy danh mục:", error);
+            }
+        };
+
+        const fetchProfile = async () => {
+            if (!accessToken) return;
+            try {
+                const profile = await AccountServiceInstance.getAccountByToken(
+                    accessToken
+                );
+                setProfile(profile);
+            } catch (error) {
+                console.error("Lỗi khi lấy thông tin người dùng:", error);
+            }
         };
 
         fetchCategories();
-    }, []);
+        if (accessToken) {
+            fetchProfile();
+        }
+    }, [accessToken]); // Only depend on accessToken
 
+    // Second useEffect for token decoding
     useEffect(() => {
         if (accessToken) {
             try {
-                const decoded: DecodedToken = jwtDecode(accessToken); // Không cần `header: true`
-                console.log("Decoded token:", decoded); // Log toàn bộ token
-                // setUserId(decoded.userId); // Lưu userId vào state
-                console.log("UserId:", decoded.userId); // Log userId
+                const decoded: DecodedToken = jwtDecode(accessToken);
+                console.log("UserId:", decoded.userId);
             } catch (error) {
                 console.error("Lỗi khi decode token:", error);
             }
@@ -66,7 +88,7 @@ function Header() {
             <TopNavbar
                 isAuthenticated={!!accessToken}
                 onLogout={handleLogout}
-                username="Nguyễn Văn A"
+                username={profile?.name}
                 userId={userId}
                 onViewOrderHistory={() => console.log("Xem lịch sử mua hàng")}
                 onViewProfile={() => console.log("Xem thông tin cá nhân")}

@@ -2,7 +2,10 @@ import axios from "axios";
 import https from "https";
 import { Category } from "@/types/Category";
 
-const BASE_URL = "https://localhost:7202/api/Category";
+const BASE_URL = new URL(
+    "Category",
+    process.env.NEXT_PUBLIC_BACKEND_URL
+).toString();
 
 class CategoryService {
     private api = axios.create({

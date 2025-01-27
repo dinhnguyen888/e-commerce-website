@@ -2,7 +2,10 @@ import axios from "axios";
 import https from "https";
 import { Login, Register } from "@/types/Auth";
 
-const BASE_URL = "https://localhost:7202/api/Auth";
+const BASE_URL = new URL(
+    "Auth",
+    process.env.NEXT_PUBLIC_BACKEND_URL
+).toString();
 
 class AuthService {
     private api = axios.create({
@@ -31,10 +34,15 @@ class AuthService {
         }
     }
 
-    async register(email: string, password: string): Promise<Register> {
+    async register(
+        email: string,
+        password: string,
+        name: string
+    ): Promise<Register> {
         try {
             const response = await this.api.post("/register", {
                 email,
+                name,
                 password,
                 roleId: 1,
             });

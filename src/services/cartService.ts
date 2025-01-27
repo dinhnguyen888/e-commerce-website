@@ -1,25 +1,28 @@
 import axios from "axios";
 import { Cart } from "@/types/Cart";
 
-const API_BASE_URL = "https://localhost:7202/api/Cart";
+const BASE_URL = new URL(
+    "Cart",
+    process.env.NEXT_PUBLIC_BACKEND_URL
+).toString();
 
 const cartService = {
     async getCartItems(userId: string): Promise<Cart[]> {
-        const response = await axios.get(`${API_BASE_URL}/${userId}`);
+        const response = await axios.get(`${BASE_URL}/${userId}`);
         return response.data;
     },
 
     async addToCart(item: Omit<Cart, "id" | "addToCartAt">): Promise<Cart> {
-        const response = await axios.post(API_BASE_URL, item);
+        const response = await axios.post(BASE_URL, item);
         return response.data;
     },
 
     async removeFromCart(itemId: string): Promise<void> {
-        await axios.delete(`${API_BASE_URL}/${itemId}`);
+        await axios.delete(`${BASE_URL}/${itemId}`);
     },
 
     async clearCart(userId: string): Promise<void> {
-        await axios.delete(`${API_BASE_URL}/clear/${userId}`);
+        await axios.delete(`${BASE_URL}/clear/${userId}`);
     },
 };
 

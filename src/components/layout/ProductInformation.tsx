@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import useAuthStore from "@/stores/userStore";
 import useCartStore from "@/stores/cartStore";
+import { useRouter } from "next/navigation"; // Sử dụng đúng useRouter từ next/navigation
 
 interface ProductInfoClientProps {
     name: string;
@@ -28,8 +29,9 @@ const ProductInformation: React.FC<ProductInfoClientProps> = ({
     productDescription,
 }) => {
     const { getUserId } = useAuthStore();
-    const userId = getUserId() ?? ""; // Lấy userId từ store
+    const userId = getUserId() ?? "";
     const { addItem } = useCartStore();
+    const router = useRouter();
 
     const handleAddToCart = async () => {
         try {
@@ -42,10 +44,13 @@ const ProductInformation: React.FC<ProductInfoClientProps> = ({
                 price: price,
                 addToCartAt: new Date().toISOString(),
             });
-            // alert("Sản phẩm đã được thêm vào giỏ hàng!");
         } catch (error) {
             console.error("Error adding product to cart:", error);
         }
+    };
+
+    const handlePurchase = () => {
+        router.push(`/do-an/${productId}/mua-ngay`);
     };
 
     const handleContact = () => {
@@ -66,7 +71,7 @@ const ProductInformation: React.FC<ProductInfoClientProps> = ({
                     type="primary"
                     size="large"
                     icon={<DollarOutlined />}
-                    onClick={() => console.log("Buy Now clicked")}
+                    onClick={handlePurchase}
                     className="w-full h-12 text-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
                 >
                     Buy Now
