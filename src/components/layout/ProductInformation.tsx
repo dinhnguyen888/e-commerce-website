@@ -7,9 +7,8 @@ import {
     PhoneOutlined,
     DollarOutlined,
 } from "@ant-design/icons";
-import useAuthStore from "@/stores/userStore";
+import useAuthStore from "@/stores/useAuthStore";
 import useCartStore from "@/stores/cartStore";
-import { useRouter } from "next/navigation"; // Sử dụng đúng useRouter từ next/navigation
 
 interface ProductInfoClientProps {
     name: string;
@@ -31,7 +30,6 @@ const ProductInformation: React.FC<ProductInfoClientProps> = ({
     const { getUserId } = useAuthStore();
     const userId = getUserId() ?? "";
     const { addItem } = useCartStore();
-    const router = useRouter();
 
     const handleAddToCart = async () => {
         try {
@@ -50,7 +48,7 @@ const ProductInformation: React.FC<ProductInfoClientProps> = ({
     };
 
     const handlePurchase = () => {
-        router.push(`/do-an/${productId}/mua-ngay`);
+        window.location.href = `/do-an/${productId}/thanh-toan`;
     };
 
     const handleContact = () => {

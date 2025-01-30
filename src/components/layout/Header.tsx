@@ -5,11 +5,12 @@ import BottomNavbar from "../common/BottomNavbar";
 import categoryService from "@/services/categoryService";
 import productService from "@/services/productService";
 import { Category } from "@/types/Category";
-import useAuthStore from "@/stores/userStore";
+import useAuthStore from "@/stores/useAuthStore";
 import { SearchResult } from "@/types/Product";
 import { jwtDecode } from "jwt-decode";
 import AccountServiceInstance from "@/services/accountService";
 import { Account } from "@/types/Account";
+import TransactionHistoryModal from "@/components/TransactionHistoryModal";
 
 interface DecodedToken {
     userId: string;
@@ -20,6 +21,7 @@ function Header() {
     const { accessToken, clearTokens, getUserId } = useAuthStore();
     const userId = getUserId() ?? "";
     const [profile, setProfile] = useState<Account>();
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     // First useEffect for fetching categories and profile
     useEffect(() => {
@@ -90,12 +92,18 @@ function Header() {
                 onLogout={handleLogout}
                 username={profile?.name}
                 userId={userId}
-                onViewOrderHistory={() => console.log("Xem lịch sử mua hàng")}
+                onViewOrderHistory={() => setIsModalVisible(true)}
                 onViewProfile={() => console.log("Xem thông tin cá nhân")}
                 onSearch={handleSearch}
             />
 
             <BottomNavbar categories={categories} />
+
+            <TransactionHistoryModal
+                visible={isModalVisible}
+                onClose={() => setIsModalVisible(false)}
+                accountId={userId}
+            />
         </>
     );
 }

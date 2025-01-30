@@ -1,11 +1,13 @@
 import axios from "axios";
 import https from "https";
 import { Login, Register } from "@/types/Auth";
+import useAuthStore from "@/stores/useAuthStore"; // Import the auth store
 
 const BASE_URL = new URL(
     "Auth",
     process.env.NEXT_PUBLIC_BACKEND_URL
 ).toString();
+// const BASE_URL = "https://localhost:7202/api/Auth";
 
 class AuthService {
     private api = axios.create({
@@ -27,6 +29,33 @@ class AuthService {
             const response = await this.api.post("/login", null, {
                 params: fromQuery,
             });
+            return response.data;
+        } catch (error) {
+            console.error("Login error:", error);
+            throw error;
+        }
+    }
+    async loginWithGithub() {
+        try {
+            window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}OAuth/login`;
+        } catch (error) {
+            console.error("Login error:", error);
+            throw error;
+        }
+    }
+    async callback() {
+        try {
+            const response = await this.api.get(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}OAuth/callback`
+            );
+
+            if (response.data) {
+                const { accessToken, refreshToken } = response.data;
+                const setTokens = useAuthStore.getState().setTokens;
+                setTokens(accessToken, refreshToken); // Set tokens in the store
+
+                window.location.href = "/";
+            }
             return response.data;
         } catch (error) {
             console.error("Login error:", error);

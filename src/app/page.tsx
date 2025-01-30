@@ -33,9 +33,12 @@ export default async function HomePage() {
                     <DynamicSlideShow images={images} />
                 </div>
             </Suspense>
-            <h1 className="text-3xl font-lucida font-bold z-20 text-black text-center mb-11">
-                Đồ án đê, mại zô mại zôoooo
-            </h1>
+            <div className="container mx-auto px-4">
+                <h1 className="text-3xl uppercase  font-bold z-20 text-black text-left font-sans mb-11  ">
+                    Tất cả project
+                </h1>
+            </div>
+
             <Suspense fallback={<div>Loading products...</div>}>
                 <ListProduct initialProducts={initialProducts} />
             </Suspense>

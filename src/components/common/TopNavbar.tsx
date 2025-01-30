@@ -102,7 +102,7 @@ const TopNavbar: React.FC<TopNavbarProps> = ({
                 <UserOutlined /> Thông tin cá nhân
             </Menu.Item>
             <Menu.Item key="order-history" onClick={onViewOrderHistory}>
-                <HistoryOutlined /> Lịch sử mua hàng
+                <HistoryOutlined /> Lịch sử giao dịch
             </Menu.Item>
             <Menu.Item key="logout" onClick={onLogout}>
                 <LogoutOutlined /> Đăng xuất

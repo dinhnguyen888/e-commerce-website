@@ -6,7 +6,7 @@ const BASE_URL = new URL(
     "Account",
     process.env.NEXT_PUBLIC_BACKEND_URL
 ).toString();
-
+// const BASE_URL = "https://localhost:7202/api/Account";
 class AccountService {
     private api = axios.create({
         baseURL: BASE_URL,

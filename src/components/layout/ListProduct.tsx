@@ -5,7 +5,7 @@ import Card from "../common/Card";
 import { PaginationProduct, Product } from "@/types/Product";
 import productService from "../../services/productService";
 import useCartStore from "@/stores/cartStore";
-import useAuthStore from "@/stores/userStore";
+import useAuthStore from "@/stores/useAuthStore";
 function ListProduct({
     initialProducts,
 }: {

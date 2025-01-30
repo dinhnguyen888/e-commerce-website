@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button, Form, Input, message } from "antd";
 import { GithubOutlined } from "@ant-design/icons";
 import AuthService from "@/services/authService";
-import useAuthStore from "@/stores/userStore";
+import useAuthStore from "@/stores/useAuthStore";
 
 interface LoginFormValues {
     email: string;
@@ -33,6 +33,9 @@ const LoginPage: React.FC = () => {
         } finally {
             setLoading(false);
         }
+    };
+    const handleLoginWithGithub = () => {
+        AuthService.loginWithGithub();
     };
 
     return (
@@ -114,9 +117,7 @@ const LoginPage: React.FC = () => {
                         icon={<GithubOutlined />}
                         size="large"
                         className="w-full flex items-center justify-center rounded-lg"
-                        onClick={() => {
-                            console.log("Github login");
-                        }}
+                        onClick={handleLoginWithGithub}
                     >
                         Đăng nhập với Github
                     </Button>

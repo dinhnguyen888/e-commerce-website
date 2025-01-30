@@ -5,7 +5,7 @@ const BASE_URL = new URL(
     "Cart",
     process.env.NEXT_PUBLIC_BACKEND_URL
 ).toString();
-
+// const BASE_URL = "https://localhost:7202/api/Cart";
 const cartService = {
     async getCartItems(userId: string): Promise<Cart[]> {
         const response = await axios.get(`${BASE_URL}/${userId}`);
