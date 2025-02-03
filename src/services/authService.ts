@@ -2,6 +2,7 @@ import axios from "axios";
 import https from "https";
 import { Login, Register } from "@/types/Auth";
 import useAuthStore from "@/stores/useAuthStore"; // Import the auth store
+import { signIn } from "next-auth/react";
 
 const BASE_URL = new URL(
     "Auth",
@@ -37,7 +38,15 @@ class AuthService {
     }
     async loginWithGithub() {
         try {
-            window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}OAuth/login`;
+            signIn("github");
+        } catch (error) {
+            console.error("Login error:", error);
+            throw error;
+        }
+    }
+    async loginWithFacebook() {
+        try {
+            signIn("facebook");
         } catch (error) {
             console.error("Login error:", error);
             throw error;

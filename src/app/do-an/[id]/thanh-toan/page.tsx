@@ -9,7 +9,8 @@ import { Product } from "@/types/Product";
 import useAuthStore from "@/stores/useAuthStore";
 import AccountServiceInstance from "@/services/accountService";
 import { Account } from "@/types/Account";
-import PaymentForm from "@/components/PaymentForm";
+import PaymentForm from "@/components/layout/PaymentForm";
+import TransactionHistoryModal from "@/components/layout/TransactionHistoryModal";
 import { CreatePayment } from "@/types/Payment";
 
 export default function PaymentPage() {
@@ -18,6 +19,8 @@ export default function PaymentPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [user, setUser] = useState<Account | null>(null);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [paymentLoading, setPaymentLoading] = useState(false);
 
     const { getAccessToken, getUserId } = useAuthStore();
 
@@ -26,6 +29,9 @@ export default function PaymentPage() {
             setLoading(true);
             setError(null); // Reset error state
             try {
+                if (!params) {
+                    throw new Error("Params is null");
+                }
                 const data = await productServiceInstance.getProductById(
                     params.id?.toString()
                 );
@@ -53,16 +59,28 @@ export default function PaymentPage() {
             }
         };
 
-        if (params.id) fetchProduct();
+        if (params?.id) fetchProduct();
         fetchUser();
-    }, [params.id, getAccessToken]);
+    }, [params, getAccessToken]);
 
     const handlePayment = async (values: CreatePayment) => {
         try {
+            setPaymentLoading(true);
+            if (!product) {
+                alert("Sản phẩm không tồn tại. Vui lòng thử lại.");
+                return;
+            }
+
+            const userId = getUserId();
+            if (!userId) {
+                alert("Người dùng không tồn tại. Vui lòng thử lại.");
+                return;
+            }
+
             const paymentData = {
                 productPay: product.title,
                 productId: product.id,
-                userId: getUserId(),
+                userId: userId,
                 paymentGateway: values.paymentGateway,
                 productPrice: product.price,
             };
@@ -74,6 +92,8 @@ export default function PaymentPage() {
         } catch (error) {
             console.error("Payment error:", error);
             alert("Thanh toán thất bại. Vui lòng thử lại.");
+        } finally {
+            setPaymentLoading(false);
         }
     };
 
@@ -152,8 +172,19 @@ export default function PaymentPage() {
                     user={user}
                     product={product}
                     handlePayment={handlePayment}
+                    loading={paymentLoading} // Pass loading state to PaymentForm
                 />
             </Row>
+            <div className="mt-8 text-center">
+                <Button type="primary" onClick={() => setIsModalVisible(true)}>
+                    Xem lịch sử giao dịch
+                </Button>
+            </div>
+            <TransactionHistoryModal
+                visible={isModalVisible}
+                onClose={() => setIsModalVisible(false)}
+                accountId={user.id}
+            />
         </div>
     );
 }

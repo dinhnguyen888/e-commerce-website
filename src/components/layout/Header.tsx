@@ -10,7 +10,7 @@ import { SearchResult } from "@/types/Product";
 import { jwtDecode } from "jwt-decode";
 import AccountServiceInstance from "@/services/accountService";
 import { Account } from "@/types/Account";
-import TransactionHistoryModal from "@/components/TransactionHistoryModal";
+import TransactionHistoryModal from "@/components/layout/TransactionHistoryModal";
 
 interface DecodedToken {
     userId: string;

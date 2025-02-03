@@ -4,6 +4,7 @@ import { Button, Form, Input, message } from "antd";
 import { GithubOutlined } from "@ant-design/icons";
 import AuthService from "@/services/authService";
 import useAuthStore from "@/stores/useAuthStore";
+// import { signIn } from "next-auth/react";
 
 interface LoginFormValues {
     email: string;
@@ -37,6 +38,10 @@ const LoginPage: React.FC = () => {
     const handleLoginWithGithub = () => {
         AuthService.loginWithGithub();
     };
+
+    // const handleLoginWithFacebook = () => {
+    //     signIn("facebook");
+    // };
 
     return (
         <div className="h-full flex items-center justify-center bg-gray-100 px-4">
@@ -116,11 +121,19 @@ const LoginPage: React.FC = () => {
                     <Button
                         icon={<GithubOutlined />}
                         size="large"
-                        className="w-full flex items-center justify-center rounded-lg"
+                        className="w-full flex items-center justify-center rounded-lg mb-2"
                         onClick={handleLoginWithGithub}
                     >
                         Đăng nhập với Github
                     </Button>
+
+                    {/* <Button
+                        size="large"
+                        className="w-full flex items-center justify-center rounded-lg bg-blue-600 text-white"
+                        onClick={handleLoginWithFacebook}
+                    >
+                        Đăng nhập với Facebook
+                    </Button> */}
                 </Form>
             </div>
         </div>

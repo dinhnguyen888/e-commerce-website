@@ -2,14 +2,27 @@ import React from "react";
 import { Card, Form, Button, Select, Col } from "antd";
 import { Account } from "@/types/Account";
 import { Product } from "@/types/Product";
+import { CreatePayment } from "@/types/Payment";
 
 interface PaymentFormProps {
     user: Account;
     product: Product;
-    handlePayment: (values: { paymentGateway: string }) => void;
+    handlePayment: (values: CreatePayment) => void;
+    loading: boolean; // Add loading prop
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({ user, handlePayment }) => {
+const PaymentForm: React.FC<PaymentFormProps> = ({
+    user,
+
+    handlePayment,
+    loading, // Destructure loading prop
+}) => {
+    const [form] = Form.useForm();
+
+    const onFinish = (values: CreatePayment) => {
+        handlePayment(values);
+    };
+
     return (
         <Col xs={24}>
             <Card title="Thông tin người dùng" bordered={false}>
@@ -23,7 +36,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ user, handlePayment }) => {
                 </div>
             </Card>
             <Card title="Phương thức thanh toán" bordered={false}>
-                <Form layout="vertical" onFinish={handlePayment}>
+                <Form form={form} onFinish={onFinish} layout="vertical">
                     <Form.Item
                         label="Chọn cổng thanh toán"
                         name="paymentGateway"
@@ -36,14 +49,17 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ user, handlePayment }) => {
                     >
                         <Select placeholder="Chọn cổng thanh toán">
                             <Select.Option value="VNPAY">VNPAY</Select.Option>
-                            <Select.Option value="stripe">Stripe</Select.Option>
-                            <Select.Option value="VTCPAY">
-                                VTC PAY
-                            </Select.Option>
+
+                            <Select.Option value="MOMO">MOMO</Select.Option>
                         </Select>
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" block>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            loading={loading} // Add loading state to button
+                            block
+                        >
                             Thanh toán ngay
                         </Button>
                     </Form.Item>
