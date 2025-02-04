@@ -1,11 +1,13 @@
 "use client";
 
-import useAuthStore from "@/stores/useAuthStore";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import useAuthStore from "@/stores/useAuthStore";
 
-function Callback() {
+const CallbackPage = () => {
     const router = useRouter();
+    const [loading, setLoading] = useState(true);
+    const setTokens = useAuthStore((state) => state.setTokens);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -14,14 +16,20 @@ function Callback() {
             const refreshToken = urlParams.get("refreshToken");
 
             if (accessToken && refreshToken) {
-                const setTokens = useAuthStore.getState().setTokens;
                 setTokens(accessToken, refreshToken);
+
                 router.push("/");
+            } else {
+                setLoading(false);
             }
         }
-    }, [router]);
+    }, [router, setTokens]);
 
-    return <div>Callback...</div>;
-}
+    if (loading) {
+        return <p>Đang xử lý...</p>;
+    }
 
-export default Callback;
+    return <p>Lỗi: Không tìm thấy token!</p>;
+};
+
+export default CallbackPage;
