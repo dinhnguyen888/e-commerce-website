@@ -77,7 +77,6 @@ const RegisterPage: React.FC = () => {
                             {
                                 required: true,
                                 message: "Vui lòng nhập tên!",
-                                type: "array",
                             },
                         ]}
                     >
