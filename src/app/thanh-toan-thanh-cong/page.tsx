@@ -5,7 +5,7 @@ const ThanhToanThanhCong: React.FC = () => {
     const router = useRouter();
 
     const handleNavigateHome = () => {
-        router.push("/trang-chủ");
+        router.push("/");
     };
 
     return (
