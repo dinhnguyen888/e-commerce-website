@@ -43,11 +43,11 @@ const PortfolioPage = () => {
                         />
                     </div>
                     <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent sm:text-6xl">
-                        I`m just a developer
+                        Lorem ipsum dolor sit amet
                     </h1>
                     <p className="mt-6 text-lg leading-8 text-gray-700">
-                        Mình là Nguyễn Phúc Đỉnh, một lập trình viên tự do, đụng
-                        gì là làm đấy <span>😁</span>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        <span>😁</span>
                     </p>
 
                     <div className="mt-8 flex justify-center gap-4">
@@ -82,7 +82,7 @@ const PortfolioPage = () => {
                                 1+
                             </div>
                             <div className="mt-2 text-base text-gray-700">
-                                Kinh nghiệm làm việc
+                                Lorem ipsum dolor sit amet
                             </div>
                         </div>
                         <div className="text-center">
@@ -90,7 +90,7 @@ const PortfolioPage = () => {
                                 20+
                             </div>
                             <div className="mt-2 text-base text-gray-700">
-                                Số project hoàn thành
+                                Lorem ipsum dolor sit amet
                             </div>
                         </div>
                         <div className="text-center">
@@ -98,7 +98,7 @@ const PortfolioPage = () => {
                                 4+
                             </div>
                             <div className="mt-2 text-base text-gray-700">
-                                Công nghệ đã đụng
+                                Lorem ipsum dolor sit amet
                             </div>
                         </div>
                     </div>
@@ -109,7 +109,7 @@ const PortfolioPage = () => {
             <div className="bg-white py-16">
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <h2 className="text-3xl font-bold text-center mb-12 text-purple-600">
-                        Tech-stack của mình
+                        Lorem ipsum dolor sit amet
                     </h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                         {skills.map((skill, index) => (
@@ -139,11 +139,10 @@ const PortfolioPage = () => {
             <div className="py-16 px-6 lg:px-8 mx-auto max-w-7xl">
                 <div className="text-center">
                     <h2 className="text-3xl font-bold mb-4 text-blue-600">
-                        Bạn có thắc mắc gì không?
+                        Lorem ipsum dolor sit amet
                     </h2>
                     <p className="text-gray-700 mb-8">
-                        Nếu bạn gặp vấn đề về dự án của mình hay cần hỗ trợ thì
-                        ấn vào nút bên dưới nhé.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     </p>
                     <a
                         href="https://www.facebook.com/nguyen.inh.869154/"

@@ -4,7 +4,7 @@ import { Login, Register } from "@/types/Auth";
 import useAuthStore from "@/stores/useAuthStore"; // Import the auth store
 import { signIn } from "next-auth/react";
 
-const BASE_URL = "/api/Auth";
+const BASE_URL = `/api/Auth`;
 // const BASE_URL = "https://localhost:7202/api/Auth";
 
 class AuthService {
@@ -51,7 +51,9 @@ class AuthService {
     }
     async callback() {
         try {
-            const response = await this.api.get(`${BASE_URL}/OAuth/callback`);
+            const response = await this.api.get(
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}OAuth/callback`
+            );
 
             if (response.data) {
                 const { accessToken, refreshToken } = response.data;
