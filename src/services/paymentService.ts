@@ -2,7 +2,9 @@ import axios from "axios";
 import https from "https";
 import { CreatePayment, GetPayment } from "@/types/Payment";
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/Payment`;
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL
+    ? new URL(process.env.NEXT_PUBLIC_BACKEND_URL).toString()
+    : "";
 
 class PaymentService {
     private api = axios.create({
