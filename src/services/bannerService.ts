@@ -2,10 +2,7 @@ import axios from "axios";
 import https from "https";
 import { Banner } from "@/types/Banner";
 
-const BASE_URL = new URL(
-    "Banner",
-    process.env.NEXT_PUBLIC_BACKEND_URL
-).toString();
+const BASE_URL = `/api/Banner`;
 // const BASE_URL = "https://localhost:7202/api/Banner";
 class BannerService {
     private api = axios.create({

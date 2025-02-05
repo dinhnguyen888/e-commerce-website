@@ -4,10 +4,7 @@ import { Login, Register } from "@/types/Auth";
 import useAuthStore from "@/stores/useAuthStore"; // Import the auth store
 import { signIn } from "next-auth/react";
 
-const BASE_URL = new URL(
-    "Auth",
-    process.env.NEXT_PUBLIC_BACKEND_URL
-).toString();
+const BASE_URL = `/api/Auth`;
 // const BASE_URL = "https://localhost:7202/api/Auth";
 
 class AuthService {
