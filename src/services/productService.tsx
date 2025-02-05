@@ -76,7 +76,7 @@ class ProductService {
         return response.data;
     }
 
-    async getProductsByTag(tag: string): Promise<PaginationProduct[]> {
+    async getProductsByTag(tag: string): Promise<Product[]> {
         const response = await this.api.get(
             `/tag?tag=${encodeURIComponent(tag)}`
         );

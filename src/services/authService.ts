@@ -82,11 +82,34 @@ class AuthService {
                 email,
                 name,
                 password,
-                roleId: 1,
+                roleId: 2,
             });
             return response.data;
         } catch (error) {
             console.error("Registration error:", error);
+            throw error;
+        }
+    }
+
+    async refreshToken(refreshToken: string): Promise<string> {
+        try {
+            const response = await this.api.post("/refresh-token", null, {
+                params: { refreshToken },
+            });
+            return response.data.accessToken;
+        } catch (error) {
+            console.error("Refresh token error:", error);
+            throw error;
+        }
+    }
+
+    async logout(refreshToken: string): Promise<void> {
+        try {
+            await this.api.post("/logout", null, {
+                params: { refreshToken },
+            });
+        } catch (error) {
+            console.error("Logout error:", error);
             throw error;
         }
     }

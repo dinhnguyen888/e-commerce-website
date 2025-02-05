@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { jwtDecode } from "jwt-decode";
+import AuthService from "@/services/authService";
 
 interface AuthState {
     accessToken: string | null;
@@ -11,6 +12,8 @@ interface AuthState {
     clearTokens: () => void;
     getAccessToken: () => string | null;
     getUserId: () => string | null;
+    refreshAccessToken: () => Promise<void>;
+    logout: () => Promise<void>;
 }
 
 interface DecodedToken {
@@ -54,6 +57,36 @@ const useAuthStore = create<AuthState>()(
             getUserId: () => {
                 const { userId } = get();
                 return userId;
+            },
+
+            // this feature is not implemented in the frontend ui yet
+            // but it's fine to have it
+            refreshAccessToken: async () => {
+                const { refreshToken, setTokens } = get();
+                if (refreshToken) {
+                    try {
+                        const newAccessToken = await AuthService.refreshToken(
+                            refreshToken
+                        );
+                        setTokens(newAccessToken, refreshToken);
+                    } catch (error) {
+                        console.error("Error refreshing access token:", error);
+                    }
+                }
+            },
+
+            // this feature is not implemented in the frontend ui yet
+            // but it's fine to have it
+            logout: async () => {
+                const { refreshToken, clearTokens } = get();
+                if (refreshToken) {
+                    try {
+                        await AuthService.logout(refreshToken);
+                        clearTokens();
+                    } catch (error) {
+                        console.error("Error logging out:", error);
+                    }
+                }
             },
         }),
         {
