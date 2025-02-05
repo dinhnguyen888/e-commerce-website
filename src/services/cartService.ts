@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Cart } from "@/types/Cart";
 
-const BASE_URL = `/api/Cart`;
+const BASE_URL = "/api/Cart";
 // const BASE_URL = "https://localhost:7202/api/Cart";
 const cartService = {
     async getCartItems(userId: string): Promise<Cart[]> {

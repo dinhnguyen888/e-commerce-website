@@ -2,7 +2,7 @@ import axios from "axios";
 import https from "https";
 import { Category } from "@/types/Category";
 
-const BASE_URL = `/api/Category`;
+const BASE_URL = "/api/Category";
 // const BASE_URL = "https://localhost:7202/api/Category";
 class CategoryService {
     private api = axios.create({

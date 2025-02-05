@@ -2,7 +2,7 @@ import axios from "axios";
 import https from "https";
 import { Banner } from "@/types/Banner";
 
-const BASE_URL = `/api/Banner`;
+const BASE_URL = "/api/Banner";
 // const BASE_URL = "https://localhost:7202/api/Banner";
 class BannerService {
     private api = axios.create({

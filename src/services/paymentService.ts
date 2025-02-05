@@ -2,7 +2,7 @@ import axios from "axios";
 import https from "https";
 import { CreatePayment, GetPayment } from "@/types/Payment";
 
-const BASE_URL = `/api/Payment`;
+const BASE_URL = "/api/Payment";
 
 class PaymentService {
     private api = axios.create({

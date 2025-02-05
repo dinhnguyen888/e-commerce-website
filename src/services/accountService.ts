@@ -2,7 +2,7 @@ import axios from "axios";
 import https from "https";
 import { Account } from "@/types/Account";
 
-const BASE_URL = `/api/Account`;
+const BASE_URL = "/api/Account";
 // const BASE_URL = "https://localhost:7202/api/Account";
 class AccountService {
     private api = axios.create({

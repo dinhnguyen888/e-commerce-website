@@ -2,7 +2,7 @@ import axios from "axios";
 import https from "https";
 import { PaginationProduct, Product, ProductDetail } from "@/types/Product";
 
-const BASE_URL = `/api/Products`;
+const BASE_URL = "/api/Products";
 // const BASE_URL = "https://localhost:7202/api/Products";
 class ProductService {
     private api = axios.create({
