@@ -2,10 +2,7 @@ import axios from "axios";
 import https from "https";
 import { Account } from "@/types/Account";
 
-const BASE_URL = new URL(
-    "Account",
-    process.env.NEXT_PUBLIC_BACKEND_URL
-).toString();
+const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/Account`;
 // const BASE_URL = "https://localhost:7202/api/Account";
 class AccountService {
     private api = axios.create({
