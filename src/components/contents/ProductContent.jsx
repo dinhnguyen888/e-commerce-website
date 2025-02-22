@@ -112,7 +112,7 @@ function ProductContent() {
 
     return (
         <>
-            <div className="container mx-auto p-4 lg:px-20">
+            <div className="container mx-auto p-4 mt-11 lg:px-20">
                 <div className="lg:">
                     <Banner images={banners} overlayTexts={overlayTexts} />
                 </div>
