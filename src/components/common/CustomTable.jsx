@@ -6,7 +6,7 @@ const CustomTable = ({ data, className, isPagination }) => {
         title: key.charAt(0).toUpperCase() + key.slice(1),
         dataIndex: key,
         key: key,
-        align: "center", // Thêm thuộc tính align để căn giữa
+        align: "center",
         render: (text) => (
             <span>
                 {text.split(",").map((item, index) => (

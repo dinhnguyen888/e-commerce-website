@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-import { Ellipsis } from "lucide-react"; // Icon dấu ba chấm
+import { Ellipsis } from "lucide-react";
 
 function Navbar({ links }) {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
@@ -59,6 +59,7 @@ function MobileNav({ links }) {
                             <a
                                 href={link.href}
                                 className="block text-blue-600 hover:text-blue-800"
+                                onClick={link.onClick}
                             >
                                 {link.text}
                             </a>
@@ -78,14 +79,16 @@ function DesktopNav({ links }) {
                     {links.map((link, index) => (
                         <li
                             key={index}
-                            className="flex-1 text-center text-base py-2 hover:bg-gray-100"
+                            className="flex-1 text-center text-base py-2 relative group"
                         >
                             <a
                                 href={link.href}
                                 className="block text-blue-600 hover:text-blue-800"
+                                onClick={link.onClick}
                             >
                                 {link.text}
                             </a>
+                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
                         </li>
                     ))}
                 </ul>
@@ -102,6 +105,7 @@ Navbar.propTypes =
                 PropTypes.shape({
                     href: PropTypes.string.isRequired,
                     text: PropTypes.string.isRequired,
+                    onClick: PropTypes.func, // Add onClick prop type
                 })
             ).isRequired,
         };

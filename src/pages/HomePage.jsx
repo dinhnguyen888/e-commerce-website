@@ -8,19 +8,24 @@ import MiddleBar from "../components/sections/MiddleBar";
 import WrappedBody from "../components/sections/WrappedBody";
 
 const sampleFilters = [
-    { label: "Category 1", link: "#category1" },
-    { label: "Category 2", link: "#category2" },
-    { label: "Category 3", link: "#category3" },
+    { label: "Đồ án mới nhất", link: "#category1" },
+    { label: "Tool mới nhất", link: "#category2" },
+    { label: "Đồ án ASP.Net", link: "#category3" },
+    { label: "Đồ án ASP.Net Core", link: "#category4" },
+    { label: "Acc ref Facebook", link: "#category5" },
+    { label: "kèo Airdrop", link: "#category6" },
+    { label: "key window bản quyền", link: "#category77" },
+    { label: "Iso ghost window 11 ", link: "#category8" },
 ];
 
-const sampleLink = [
+const mininavbarLink = [
     { label: "Sản phẩm", key: "ProductPage" },
     { label: "Bài viết", key: "ArticlePage" },
     { label: "Tin tức", key: "NewsPage" },
 ];
 
 const Content = () => {
-    const [activeBar, setActiveBar] = useState(sampleLink[0].key);
+    const [activeBar, setActiveBar] = useState(mininavbarLink[0].key);
     const handleMiniBarClick = (key) => {
         setActiveBar(key);
     };
@@ -28,11 +33,14 @@ const Content = () => {
     return (
         <div className="w-full container ">
             <MiniNavBar
-                items={sampleLink}
+                items={mininavbarLink}
                 onClickActiveBar={handleMiniBarClick}
             />
 
-            <WrappedBody caseKey={activeBar.toString()} caseProp={sampleLink} />
+            <WrappedBody
+                caseKey={activeBar.toString()}
+                caseProp={mininavbarLink}
+            />
         </div>
     );
 };

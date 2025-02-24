@@ -1,4 +1,4 @@
-import apiClient from "./config.api";
+import apiClient from "./APIConfig";
 
 export const fetchProducts = async () => {
     try {

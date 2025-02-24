@@ -5,97 +5,99 @@ import MainTitle from "../common/MainTitle";
 import CustomTable from "../common/CustomTable";
 import BuyNowButton from "../common/BuyNowButton";
 import RelativeThing from "../common/RelativeThing";
+import Loading from "../common/Loading";
+import useViewDetail from "../../hooks/useViewDetail";
 
-const ProductDetailContent = ({ product }) => {
-    if (!product) {
-        return <div>Loading...</div>;
-    }
+const ProductDetailContent = ({ productId }) => {
+    const { product, loading, error } = useViewDetail(productId);
+    console.log(product);
 
-    const tableData = [
-        {
-            "Tính năng": "xác thực, phân quyền ",
-            "Công nghệ sử dụng": "Asp .net, winform, wpf",
-        },
-    ];
+    if (loading) return <Loading />;
+    if (error) return <div>Error loading product: {error.message}</div>;
+    if (!product) return <div>No product data available</div>;
 
-    const relatedItems = [
-        {
-            image: "https://placehold.co/240x240.png",
-            title: "Related Product 1",
-            price: "100,000đ",
-        },
-        {
-            image: "https://placehold.co/240x240.png",
-            title: "Related Product 2",
-            price: "200,000đ",
-        },
-        {
-            image: "https://placehold.co/240x240.png",
-            title: "Related Product 3",
-            price: "300,000đ",
-        },
-    ];
+    const data = {
+        tableData: [
+            {
+                "Tính năng": product.feature,
+                "Công nghệ sử dụng": product.technologyUsed,
+            },
+        ],
+        relatedItems: [
+            {
+                image: "https://placehold.co/240x240.png",
+                title: "Related Product 1",
+                price: "100,000đ",
+            },
+            {
+                image: "https://placehold.co/240x240.png",
+                title: "Related Product 2",
+                price: "200,000đ",
+            },
+            {
+                image: "https://placehold.co/240x240.png",
+                title: "Related Product 3",
+                price: "300,000đ",
+            },
+        ],
+    };
 
     return (
-        <div className="p-4 bg-white shadow-lg rounded-lg relative">
-            <div className="flex flex-col md:flex-row">
-                <div className="lg:w-1/2">
-                    <Carousel images={product.images} />
+        <div className="p-6 mt-1 bg-white shadow-lg rounded-lg relative">
+            <div className="flex flex-col lg:flex-row">
+                <div className="lg:w-1/2 w-full">
+                    <Carousel images={product.imageUrls} />
                 </div>
-                <div className="md:w-1/2 md:pl-6 h-96">
+                <div className="lg:w-1/2 w-full lg:pl-8 mt-5 lg:mt-0">
                     <MainTitle
-                        text={product.name}
-                        className={"font-semibold text-gray-900 lg:mt-0 mt-5 "}
+                        text={product.title}
+                        className={"font-bold text-2xl text-gray-900"}
                     />
-                    <p className="text-base font-semibold my-2 text-blue-600">
+                    <p className="text-lg font-medium my-2 text-blue-600">
                         Tag: {product.tag}
                     </p>
                     <MainTitle
-                        className="font-semibold text-red-600 my-6"
+                        className="font-bold text-xl text-red-600 my-6"
                         text={`Giá: ${product.price.toLocaleString()}đ`}
                     />
-                    <div className="flex space-x-4">
+                    <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
                         <BuyNowButton
                             className={"text-white"}
                             size={"large"}
                             bgColor={"red"}
                             color={"white"}
-                            productId={1}
+                            productId={product.id}
                         />
-                        <Button type="primary">Mua ngay</Button>
+                        <Button type="primary" className="lg:w-auto w-full">
+                            Thêm vào giỏ{" "}
+                        </Button>
                     </div>
                 </div>
             </div>
             <CustomTable
-                data={tableData}
-                className="mt-4"
+                data={data.tableData}
+                className="mt-6"
                 isPagination={false}
             />
             <MainTitle
                 text="Mô tả sản phẩm"
-                className="font-semibold text-gray-900 mt-6"
+                className="font-bold text-xl text-gray-900 mt-8"
             />
             <div
-                className="text-base text-gray-600"
-                dangerouslySetInnerHTML={{ __html: product.description }}
+                className="text-base text-gray-700 my-8 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: product.descriptionDetail }}
             />
             <MainTitle
                 text="Sản phẩm liên quan"
-                className="font-semibold text-gray-900 mt-6"
+                className="font-bold text-xl text-gray-900"
             />
-            <RelativeThing items={relatedItems} />
+            <RelativeThing items={data.relatedItems} />
         </div>
     );
 };
 
 ProductDetailContent.propTypes = {
-    product: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        images: PropTypes.arrayOf(PropTypes.string).isRequired,
-        description: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        tag: PropTypes.string.isRequired,
-    }).isRequired,
+    productId: PropTypes.number.isRequired,
 };
 
 export default ProductDetailContent;

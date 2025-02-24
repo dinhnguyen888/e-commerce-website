@@ -3,69 +3,8 @@ import Banner from "../common/Banner";
 import Card from "../common/Card";
 import { Pagination } from "antd";
 import useFetchProducts from "../../hooks/useFetchProducts";
-
-const listProducts = {
-    currentPage: 1,
-    itemsPerPage: 4,
-    products: [
-        {
-            imageUrl: "https://placehold.co/150",
-            title: "Sample Product 1",
-            description: "This is a sample product description.",
-            price: 100,
-            rating: 4.5,
-        },
-        {
-            imageUrl: "https://placehold.co/150",
-            title: "Sample Product 2",
-            description: "This is another sample product description.",
-            price: 200,
-            rating: 4.0,
-        },
-        {
-            imageUrl: "https://placehold.co/150",
-            title: "Sample Product 3",
-            description: "This is yet another sample product description.",
-            price: 150,
-            rating: 4.2,
-        },
-        {
-            imageUrl: "https://placehold.co/150",
-            title: "Sample Product 4",
-            description: "This is a different sample product description.",
-            price: 250,
-            rating: 4.8,
-        },
-        {
-            imageUrl: "https://placehold.co/150",
-            title: "Phần mềm giám sát hoạt động bất thường của hệ thống bằng ASP .NET",
-            description: "This is a unique sample product description.",
-            price: 300,
-            rating: 4.7,
-        },
-        {
-            imageUrl: "https://placehold.co/150",
-            title: "Sample Product 6",
-            description: "This is a special sample product description.",
-            price: 350,
-            rating: 4.9,
-        },
-        {
-            imageUrl: "https://placehold.co/150",
-            title: "Sample Product 7",
-            description: "This is an additional sample product description.",
-            price: 400,
-            rating: 4.6,
-        },
-        {
-            imageUrl: "https://placehold.co/150",
-            title: "Sample Product 8",
-            description: "This is a further sample product description.",
-            price: 450,
-            rating: 4.3,
-        },
-    ],
-};
+import Loading from "../common/Loading";
+import useCart from "../../hooks/useCart";
 
 const banners = [
     {
@@ -81,9 +20,9 @@ const banners = [
 const overlayTexts = ["Banner Title 1", "Banner Title 2"];
 
 function ProductContent() {
-    const { itemsPerPage } = listProducts;
     const [currentPage, setCurrentPage] = useState(1);
     const { products, loading, error } = useFetchProducts();
+    const { addToCart, loading: cartLoading, error: cartError } = useCart();
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -94,21 +33,39 @@ function ProductContent() {
         console.log(`Buying product: ${product.title}`);
     };
 
-    const handleAddToCart = (product) => {
-        console.log(`Adding product to cart: ${product.title}`);
+    const handleAddToCart = async (product) => {
+        try {
+            await addToCart({
+                id: product.id,
+                userId: "user-id-placeholder",
+                productName: product.title,
+                productId: product.id,
+                productDescription: product.description,
+                price: product.price,
+                addToCartAt: new Date().toISOString(),
+            });
+            console.log(`Added product to cart: ${product.title}`);
+        } catch (error) {
+            console.error("Failed to add product to cart", error);
+        }
     };
 
     const handleViewDetail = (product) => {
-        console.log(`Viewing details for product: ${product.title}`);
+        window.location.href = `/san-pham/${product.id}`;
     };
 
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const currentProducts = listProducts.products.slice(startIndex, endIndex);
-    console.log("Current products:", products);
+    if (loading || cartLoading) return <Loading />;
+    if (error || cartError)
+        return (
+            <div>
+                Error loading products: {error?.message || cartError?.message}
+            </div>
+        );
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error loading products: {error.message}</div>;
+    const { pageSize, totalProducts, products: productList } = products;
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    const currentProducts = productList.slice(startIndex, endIndex);
 
     return (
         <>
@@ -130,6 +87,7 @@ function ProductContent() {
                             price={card.price}
                             tag={card.tag}
                             rating={card.rating}
+                            postedDate={card.postedDate}
                         />
                     ))}
                 </div>
@@ -137,8 +95,8 @@ function ProductContent() {
                 <div className="flex justify-center mt-4">
                     <Pagination
                         current={currentPage}
-                        pageSize={itemsPerPage}
-                        total={products.length}
+                        pageSize={pageSize}
+                        total={totalProducts}
                         onChange={handlePageChange}
                         showQuickJumper
                     />

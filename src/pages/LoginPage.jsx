@@ -3,13 +3,18 @@ import GenericForm from "../components/common/GenericForm";
 import SocialLogin from "../components/common/SocialLogin";
 import RegisterLink from "../components/common/AuthLink";
 import { loginUser } from "../services/login.api";
+import { useAuth } from "../contexts/AuthContext";
 
 const LoginPage = () => {
+    const { login } = useAuth();
+
     const onFinish = async (values) => {
         console.log("Form values:", values);
         var token = await loginUser(values.email, values.password);
         if (token) {
             console.log("Account:", token.accessToken);
+            login(token.accessToken);
+            window.location.href = "/";
         }
     };
 
@@ -44,6 +49,7 @@ const LoginPage = () => {
                 checkboxContent={"Remember me"}
             />
             <SocialLogin />
+
             <RegisterLink />
         </AuthLayout>
     );

@@ -11,6 +11,7 @@ function Card({
     onViewDetails,
     price,
     tag,
+    postedDate,
 }) {
     const handleBuyClick = (e) => {
         e.stopPropagation();
@@ -34,7 +35,7 @@ function Card({
                         className="w-full h-60 object-cover rounded-t-md"
                     />
                     <p className="absolute bottom-0 bg-black opacity-50 w-full text-red-200 text-sm text-center py-1">
-                        Giá: {price}.000 đ
+                        Giá: {price.toLocaleString()} đ
                     </p>
                 </div>
             }
@@ -58,6 +59,10 @@ function Card({
                             }}
                         >
                             {description}
+                        </p>
+                        <p className="text-gray-500 text-xs mt-2">
+                            Posted on:{" "}
+                            {new Date(postedDate).toLocaleDateString()}
                         </p>
                     </div>
                 }
@@ -91,6 +96,7 @@ Card.propTypes = {
     onViewDetails: PropTypes.func.isRequired,
     price: PropTypes.number.isRequired,
     tag: PropTypes.string,
+    postedDate: PropTypes.string.isRequired,
 };
 
 export default Card;

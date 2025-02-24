@@ -6,8 +6,11 @@ import ProductPage from "./pages/ProductPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import IntroductionPage from "./pages/IntroductionPage";
+import { useGoogleOneTapLogin } from "./hooks/useGoogleOneTapLogin";
 
 function App() {
+    useGoogleOneTapLogin();
+
     return (
         <Router>
             <Routes>
@@ -16,9 +19,11 @@ function App() {
                 <Route path="/dang-ky" element={<RegisterPage />} />
                 <Route path="/san-pham" element={<ProductPage />} />
                 <Route path="/gioi-thieu" element={<IntroductionPage />} />
-                <Route path="/san-pham/:id" element={<ProductDetailPage />} />
+                <Route
+                    path="/san-pham/:productId"
+                    element={<ProductDetailPage />}
+                />
                 <Route path="/checkout/:id" element={<CheckoutPage />} />
-
             </Routes>
         </Router>
     );
