@@ -1,10 +1,11 @@
-import { Drawer, Menu } from "antd";
+import { Drawer } from "antd";
 import { useState } from "react";
 import { useMenu } from "../../contexts/MenuContext";
 import useLogout from "../../hooks/useLogout";
 import Cart from "../common/Cart";
 import Orders from "../common/Orders";
 import Profile from "../common/Profile";
+import MenuNavbar from "../common/MenuNavbar";
 
 export default function SlidingMenu() {
     const { isMenuOpen, toggleMenu } = useMenu();
@@ -38,31 +39,33 @@ export default function SlidingMenu() {
     };
 
     return (
-        <div className="fixed top-1/4 left-0 z-50">
+        <div className="fixed top-4 right-4 z-50 lg:w-full">
             <Drawer
-                title="Menu Section"
+                title={
+                    <span className="text-xl font-semibold font-sans text-white">
+                        Hành trang
+                    </span>
+                }
                 placement="right"
                 closable={true}
                 onClose={toggleMenu}
-                visible={isMenuOpen}
+                open={isMenuOpen}
                 bodyStyle={{
-                    backgroundColor: "rgba(31, 41, 55, 1)",
-                    color: "white",
+                    backgroundColor: "white",
+                    color: "black",
+                    padding: "0",
                 }}
-                className="z-40"
+                headerStyle={{
+                    backgroundColor: "#111827",
+                    borderBottom: "1px solid #374151",
+                }}
+                width="45vw" // Set the width to 50% of the viewport width
             >
-                <Menu
-                    theme="dark"
-                    mode="horizontal"
-                    defaultSelectedKeys={["Cart"]}
-                    onClick={handleMenuClick}
-                >
-                    <Menu.Item key="Cart">Cart</Menu.Item>
-                    <Menu.Item key="Orders">Orders</Menu.Item>
-                    <Menu.Item key="Profile">Profile</Menu.Item>
-                    <Menu.Item key="logout">Log out</Menu.Item>
-                </Menu>
-                <div>{renderComponent()}</div>
+                <MenuNavbar
+                    activeComponent={activeComponent}
+                    onMenuClick={handleMenuClick}
+                />
+                <div className="">{renderComponent()}</div>
             </Drawer>
         </div>
     );

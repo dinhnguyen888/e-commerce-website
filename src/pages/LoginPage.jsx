@@ -9,12 +9,18 @@ const LoginPage = () => {
     const { login } = useAuth();
 
     const onFinish = async (values) => {
-        console.log("Form values:", values);
-        var token = await loginUser(values.email, values.password);
-        if (token) {
-            console.log("Account:", token.accessToken);
-            login(token.accessToken);
-            window.location.href = "/";
+        try {
+            var token = await loginUser(values.email, values.password);
+            if (token) {
+                login(token.accessToken);
+                window.location.href = "/";
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                alert("Vui lòng kiểm tra email hoặc mật khẩu.");
+            } else {
+                console.error("An unexpected error occurred:", error);
+            }
         }
     };
 

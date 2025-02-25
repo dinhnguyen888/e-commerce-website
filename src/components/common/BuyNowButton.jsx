@@ -1,11 +1,10 @@
 import PropTypes from "prop-types";
-import { Button } from "antd";
+import { Button, message } from "antd";
 
 const BuyNowButton = ({ productId, className, size, bgColor, color }) => {
     const handleBuyNow = () => {
         // Logic to handle the buy now action
         console.log(`Buying product with ID: ${productId}`);
-        // Add your buy now logic here
     };
 
     return (

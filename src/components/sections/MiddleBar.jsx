@@ -21,7 +21,7 @@ function MiddleBar() {
                     { href: "/gioi-thieu", text: "Giới thiệu" },
                     {
                         href: isLoggedIn ? null : "/dang-nhap",
-                        text: isLoggedIn ? "Profile🧑‍💻" : "Đăng nhập🔑",
+                        text: isLoggedIn ? "Menu ☰" : "Đăng nhập🔑",
                         onClick: isLoggedIn ? handleOpenMenu : null,
                     },
                 ]}

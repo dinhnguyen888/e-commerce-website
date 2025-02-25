@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Banner from "../common/Banner";
 import Card from "../common/Card";
-import { Pagination } from "antd";
+import { message, Pagination } from "antd";
 import useFetchProducts from "../../hooks/useFetchProducts";
 import Loading from "../common/Loading";
 import useCart from "../../hooks/useCart";
@@ -31,6 +31,7 @@ function ProductContent() {
 
     const handleBuy = (product) => {
         console.log(`Buying product: ${product.title}`);
+        message.success(`hehe, bought ${product.title}`);
     };
 
     const handleAddToCart = async (product) => {
@@ -74,7 +75,7 @@ function ProductContent() {
                     <Banner images={banners} overlayTexts={overlayTexts} />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-20 px-5 lg:px-0 py-11 my-5 justify-items-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-7 px-5 lg:px-0 py-11 justify-items-center">
                     {currentProducts.map((card, index) => (
                         <Card
                             key={index}
