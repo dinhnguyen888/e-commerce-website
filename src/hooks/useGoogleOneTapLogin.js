@@ -31,6 +31,7 @@ export const useGoogleOneTapLogin = () => {
         onError: (error) => {
             console.log("Google login error:", error);
         },
+        disableCancelOnUnmount: false,
         disabled: isLoggedIn,
         googleAccountConfigs: {
             client_id: GOOGLE_API,
