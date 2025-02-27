@@ -6,6 +6,7 @@ import useFetchProducts from "../../hooks/useFetchProducts";
 import Loading from "../common/Loading";
 import { useAuth } from "../../contexts/AuthContext";
 import { useCart } from "../../contexts/CartContext";
+import { usePayment } from "../../contexts/PaymentContext";
 
 const banners = [
     {
@@ -25,15 +26,18 @@ function ProductContent() {
     const { products, loading, error } = useFetchProducts();
     const { addToCart } = useCart();
     const { userId } = useAuth();
+    const { navigatePayment } = usePayment();
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
         console.log(`Page changed to: ${page}`);
     };
 
-    const handleBuy = (product) => {
-        console.log(`Buying product: ${product.title}`);
-        message.success(`hehe, bought ${product.title}`);
+    const handleBuyClick = (product) => {
+        navigatePayment(product.id, {
+            productPay: product.title,
+            productPrice: product.price,
+        });
     };
 
     const handleAddToCart = async (product) => {
@@ -81,7 +85,7 @@ function ProductContent() {
                             imageUrl={card.imageUrl}
                             title={card.title}
                             description={card.description}
-                            onBuy={() => handleBuy(card)}
+                            onBuy={() => handleBuyClick(card)}
                             onAddToCart={() => handleAddToCart(card)}
                             onViewDetails={() => handleViewDetail(card)}
                             price={card.price}

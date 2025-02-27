@@ -1,156 +1,95 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useCart } from "../contexts/CartContext";
-import { usePayment } from "../contexts/PaymentContext";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { message } from "antd";
 import { useAuth } from "../contexts/AuthContext";
+import { usePayment } from "../contexts/PaymentContext";
+import CheckoutContent from "../components/contents/CheckoutContent";
+import BaseLayout from "../components/layout/BaseLayout";
+import toast from "react-hot-toast";
+
+const paymentMethods = [
+    {
+        value: "VNPAY",
+        name: "Thanh toán qua VNPAY",
+        logo: "/vnpay-logo.webp",
+        isSandboxEnv: true,
+    },
+    {
+        value: "PAYOS",
+        name: "Ví điện tử PAYOS",
+        logo: "/payos-logo.svg",
+    },
+    {
+        value: "MOMO",
+        name: "Ví MoMo",
+        logo: "/momo-logo.png",
+        isSandboxEnv: true,
+    },
+    {
+        value: "PAYPAL",
+        name: "PayPal",
+        logo: "/paypal-logo.png",
+    },
+];
 
 const CheckoutPage = () => {
-    const { id } = useParams();
+    const { accessToken, userId, username, email } = useAuth();
+    const {
+        tempProductId,
+        tempProductPay,
+        tempPrice,
+        initiatePayment,
+        loading,
+    } = usePayment();
+    const [selectedGateway, setSelectedGateway] = useState("PAYOS");
     const navigate = useNavigate();
-    const { cart, total } = useCart();
-    const { user } = useAuth();
-    const { processPayment } = usePayment();
 
-    const [shippingInfo, setShippingInfo] = useState({
-        fullName: "",
-        phone: "",
-        address: "",
-        city: "",
-        note: "",
-    });
+    useEffect(() => {
+        if (!accessToken) {
+            navigate("/dang-nhap", { replace: true });
+        }
+    }, [accessToken, navigate]);
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setShippingInfo((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handlePayment = async () => {
         try {
+            if (!userId || !tempProductId || !tempProductPay || !tempPrice) {
+                toast.error("Thiếu thông tin thanh toán!");
+                return;
+            }
+
             const paymentData = {
-                orderId: id,
-                amount: total,
-                shippingInfo,
-                items: cart,
-                userId: user?.id,
+                productId: tempProductId,
+                productName: tempProductPay,
+                userId: userId,
+                price: tempPrice,
             };
 
-            await processPayment(paymentData);
-            // Sau khi thanh toán thành công, chuyển hướng về trang chủ
-            navigate("/");
+            await initiatePayment(paymentData, selectedGateway);
         } catch (error) {
-            console.error("Lỗi thanh toán:", error);
-            alert("Có lỗi xảy ra khi thanh toán");
+            message.error("Không thể khởi tạo thanh toán: " + error.message);
         }
     };
 
+    if (!accessToken) {
+        return null;
+    }
+
     return (
-        <div className="container mx-auto px-4 py-8">
-            <h1 className="text-2xl font-bold mb-6">Thanh toán</h1>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Form thông tin giao hàng */}
-                <div className="bg-white p-6 rounded-lg shadow">
-                    <h2 className="text-xl font-semibold mb-4">
-                        Thông tin giao hàng
-                    </h2>
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-4">
-                            <label className="block mb-2">Họ và tên</label>
-                            <input
-                                type="text"
-                                name="fullName"
-                                value={shippingInfo.fullName}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border rounded"
-                                required
-                            />
-                        </div>
-
-                        <div className="mb-4">
-                            <label className="block mb-2">Số điện thoại</label>
-                            <input
-                                type="tel"
-                                name="phone"
-                                value={shippingInfo.phone}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border rounded"
-                                required
-                            />
-                        </div>
-
-                        <div className="mb-4">
-                            <label className="block mb-2">Địa chỉ</label>
-                            <input
-                                type="text"
-                                name="address"
-                                value={shippingInfo.address}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border rounded"
-                                required
-                            />
-                        </div>
-
-                        <div className="mb-4">
-                            <label className="block mb-2">Thành phố</label>
-                            <input
-                                type="text"
-                                name="city"
-                                value={shippingInfo.city}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border rounded"
-                                required
-                            />
-                        </div>
-
-                        <div className="mb-4">
-                            <label className="block mb-2">Ghi chú</label>
-                            <textarea
-                                name="note"
-                                value={shippingInfo.note}
-                                onChange={handleInputChange}
-                                className="w-full p-2 border rounded"
-                                rows="3"
-                            />
-                        </div>
-                    </form>
-                </div>
-
-                {/* Thông tin đơn hàng */}
-                <div className="bg-white p-6 rounded-lg shadow">
-                    <h2 className="text-xl font-semibold mb-4">
-                        Thông tin đơn hàng
-                    </h2>
-                    <div className="space-y-4">
-                        {cart.map((item) => (
-                            <div key={item.id} className="flex justify-between">
-                                <span>
-                                    {item.name} x {item.quantity}
-                                </span>
-                                <span>{item.price * item.quantity}đ</span>
-                            </div>
-                        ))}
-
-                        <div className="border-t pt-4">
-                            <div className="flex justify-between font-bold">
-                                <span>Tổng cộng</span>
-                                <span>{total}đ</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button
-                        onClick={handleSubmit}
-                        className="w-full mt-6 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-                    >
-                        Xác nhận thanh toán
-                    </button>
-                </div>
+        <BaseLayout>
+            <div className="container mx-auto py-8">
+                <CheckoutContent
+                    username={username}
+                    email={email}
+                    productName={tempProductPay}
+                    productPrice={tempPrice}
+                    selectedGateway={selectedGateway}
+                    onGatewayChange={setSelectedGateway}
+                    onPayment={handlePayment}
+                    loading={loading}
+                    paymentMethods={paymentMethods}
+                />
             </div>
-        </div>
+        </BaseLayout>
     );
 };
 

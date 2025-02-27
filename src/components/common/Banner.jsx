@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Carousel } from "antd";
 
-const Banner = ({ images, overlayTexts }) => {
+const Banner = ({ images }) => {
     return (
         <Carousel autoplay>
             {images.map((image, index) => (
@@ -15,7 +15,7 @@ const Banner = ({ images, overlayTexts }) => {
                         className="w-full h-full object-cover"
                     />
 
-                    {/* understand html data */}
+                    {/* understand html data
                     {overlayTexts && overlayTexts[index] && (
                         <div className="absolute inset-y-0 left-0 w-1/3 my-11 mx-4 ">
                             <div
@@ -24,7 +24,7 @@ const Banner = ({ images, overlayTexts }) => {
                                 }}
                             />
                         </div>
-                    )}
+                    )} */}
                 </div>
             ))}
         </Carousel>

@@ -9,11 +9,14 @@ import useViewDetail from "../../hooks/useViewDetail";
 import { useCart } from "../../contexts/CartContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { message } from "antd";
+import { usePayment } from "../../contexts/PaymentContext";
+import ProductComment from "../ProductComment";
 
 const ProductDetailContent = ({ productId }) => {
     const { product, loading, error } = useViewDetail(productId);
     const { addToCart } = useCart();
-    const { userId } = useAuth();
+    const { userId, username } = useAuth();
+    const { navigatePayment } = usePayment();
 
     console.log(product);
     const handleAddToCart = async () => {
@@ -33,6 +36,13 @@ const ProductDetailContent = ({ productId }) => {
             console.error("Failed to add product to cart", error);
             message.error("Failed to add product to cart");
         }
+    };
+
+    const handleBuyNow = () => {
+        navigatePayment(product.id, {
+            productPay: product.title,
+            productPrice: product.price,
+        });
     };
 
     if (loading) return <Loading />;
@@ -65,6 +75,12 @@ const ProductDetailContent = ({ productId }) => {
         ],
     };
 
+    // Tạo đối tượng currentUser từ thông tin auth
+    const currentUser = {
+        id: userId,
+        name: username || "Anonymous User",
+    };
+
     return (
         <div className="p-6 mt-1 bg-white shadow-lg rounded-lg relative">
             <div className="flex flex-col lg:flex-row">
@@ -87,7 +103,7 @@ const ProductDetailContent = ({ productId }) => {
                         <Button
                             type="primary"
                             className="lg:w-auto w-full"
-                            onClick={() => {}}
+                            onClick={handleBuyNow}
                         >
                             Mua ngay
                         </Button>
@@ -119,6 +135,7 @@ const ProductDetailContent = ({ productId }) => {
                 className="font-bold text-xl text-gray-900"
             />
             <RelativeThing items={data.relatedItems} />
+            <ProductComment pageId={product.id} currentUser={currentUser} />
         </div>
     );
 };

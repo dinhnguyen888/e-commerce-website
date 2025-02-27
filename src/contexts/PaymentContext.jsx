@@ -1,62 +1,73 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext } from "react";
 import PropTypes from "prop-types";
-import { viewPaymentHistory as viewPaymentHistoryService } from "../services/payment.viewHistory";
-import { useAuth } from "./AuthContext";
+import { viewPaymentHistory } from "../services/payment.viewHistory";
+import { CreatePayment } from "../services/payment.create";
+import { useNavigate } from "react-router-dom";
 
 const PaymentContext = createContext();
 
 export const PaymentProvider = ({ children }) => {
-    const { userId } = useAuth();
+    const navigate = useNavigate();
     const [paymentHistory, setPaymentHistory] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [tempProductId, setTempProductId] = useState(null);
+    const [tempProductPay, setTempProductPay] = useState(null);
+    const [tempPrice, setTempPrice] = useState(null);
 
-    useEffect(() => {
-        const fetchPaymentHistory = async () => {
-            try {
-                const token = localStorage.getItem("token");
-                const history = await viewPaymentHistoryService(token);
-                setPaymentHistory(Array.isArray(history) ? history : []);
-            } catch (error) {
-                console.error("Failed to fetch payment history:", error);
-            }
-        };
+    const fetchPaymentHistory = async (token) => {
+        setLoading(true);
+        setError(null);
 
-        if (userId) {
-            fetchPaymentHistory();
-        }
-    }, [userId]);
-
-    const processPayment = async (paymentData) => {
         try {
-            // Giả lập gọi API thanh toán
-            console.log("Đang xử lý thanh toán:", paymentData);
-
-            // Đây là nơi bạn sẽ gọi API thanh toán thực tế
-            // const response = await fetch('your-payment-api-endpoint', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(paymentData),
-            // });
-
-            // Giả lập delay để mô phỏng quá trình thanh toán
-            await new Promise((resolve) => setTimeout(resolve, 1500));
-
-            // Nếu thanh toán thành công
-            return {
-                success: true,
-                message: "Thanh toán thành công",
-                orderId: paymentData.orderId,
-            };
+            const data = await viewPaymentHistory(token);
+            setPaymentHistory(Array.isArray(data) ? data : []);
         } catch (error) {
-            console.error("Lỗi xử lý thanh toán:", error);
-            throw new Error("Không thể xử lý thanh toán");
+            setError(error.message);
+            setPaymentHistory([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const navigatePayment = (productId, productInfo = null) => {
+        if (productInfo) {
+            setTempProductId(productId);
+            setTempProductPay(productInfo.productPay);
+            setTempPrice(productInfo.productPrice);
+        }
+        navigate(`/checkout/${productId}`);
+    };
+
+    const initiatePayment = async (payment, gateway) => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const response = await CreatePayment(payment, gateway);
+            if (response?.data) {
+                window.location.href = response.data;
+                return response.data;
+            }
+            throw new Error("Invalid payment response");
+        } catch (err) {
+            setError(err.message);
+            throw err;
+        } finally {
+            setLoading(false);
         }
     };
 
     const value = {
         paymentHistory,
-        processPayment,
+        loading,
+        error,
+        initiatePayment,
+        navigatePayment,
+        tempProductId,
+        tempProductPay,
+        tempPrice,
+        fetchPaymentHistory,
     };
 
     return (

@@ -17,8 +17,8 @@ function App() {
     return (
         <AuthProvider>
             <CartProvider>
-                <PaymentProvider>
-                    <Router>
+                <Router>
+                    <PaymentProvider>
                         <Routes>
                             <Route path="/" element={<HomePage />} />
                             <Route path="/dang-nhap" element={<LoginPage />} />
@@ -33,12 +33,12 @@ function App() {
                                 element={<ProductDetailPage />}
                             />
                             <Route
-                                path="/checkout/:id"
+                                path="/checkout/:productId"
                                 element={<CheckoutPage />}
                             />
                         </Routes>
-                    </Router>
-                </PaymentProvider>
+                    </PaymentProvider>
+                </Router>
             </CartProvider>
         </AuthProvider>
     );
