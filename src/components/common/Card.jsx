@@ -32,55 +32,54 @@ function Card({
                     <img
                         src={imageUrl}
                         alt={title}
-                        className="w-full h-60 object-cover rounded-t-md"
+                        className="w-full h-44 md:h-44 h-32 object-cover rounded-t-md"
                     />
-                    <p className="absolute bottom-0 bg-black opacity-50 w-full text-red-200 text-sm text-center py-1">
+                    <p className="absolute bottom-0 bg-black opacity-50 w-full text-red-200 md:text-sm text-xs text-center md:py-1 py-0.5">
                         Giá: {price.toLocaleString()} đ
                     </p>
                 </div>
             }
             onClick={onViewDetails}
+            bodyStyle={{ padding: "12px" }}
         >
             <AntCard.Meta
                 title={
-                    <h2 className="text-md font-semibold text-center">
+                    <h2 className="md:text-md text-sm font-semibold text-center truncate">
                         {title}
                     </h2>
                 }
                 description={
                     <div className="text-gray-700 text-xs">
-                        <span className="font-semibold">{tag}</span>
-                        <p
-                            className="line-clamp-2 overflow-hidden text-ellipsis"
-                            style={{
-                                display: "-webkit-box",
-                                WebkitLineClamp: 2,
-                                WebkitBoxOrient: "vertical",
-                            }}
-                        >
+                        <span className="font-semibold truncate block">
+                            {tag}
+                        </span>
+                        <p className="line-clamp-1 md:line-clamp-2 overflow-hidden text-ellipsis">
                             {description}
                         </p>
-                        <p className="text-gray-500 text-xs mt-2">
-                            Posted on:{" "}
+                        <p className="text-gray-500 text-xs mt-1 md:mt-2">
                             {new Date(postedDate).toLocaleDateString()}
                         </p>
                     </div>
                 }
             />
-            <div className="flex justify-center gap-2 mt-4">
+            <div className="flex justify-center gap-2 mt-2 md:mt-4">
                 <Button
                     type="primary"
                     icon={<DollarOutlined />}
+                    size="middle"
+                    className="flex items-center min-w-[100px] md:min-w-[120px] justify-center hover:opacity-90"
                     onClick={handleBuyClick}
                 >
-                    Mua ngay
+                    <span className="md:text-sm text-xs">Mua ngay</span>
                 </Button>
                 <Button
                     type="default"
                     icon={<ShoppingCartOutlined />}
+                    size="middle"
+                    className="flex items-center min-w-[100px] md:min-w-[120px] justify-center border-blue-500 text-blue-500 hover:text-blue-600 hover:border-blue-600"
                     onClick={handleAddToCartClick}
                 >
-                    Thêm vào giỏ
+                    <span className="md:text-sm text-xs">Thêm vào giỏ</span>
                 </Button>
             </div>
         </AntCard>

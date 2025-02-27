@@ -14,19 +14,19 @@ const Carousel = ({ images }) => {
     };
 
     return (
-        <div className="flex flex-col items-start justify-center space-y-4">
-            <div className="mb-4 relative w-full h-64">
+        <div className="flex flex-col items-start justify-center space-y-2 md:space-y-4">
+            <div className="relative w-full h-[200px] md:h-64">
                 <img
-                    className={`h-full w-full object-fill rounded-sm transition-opacity duration-500 ease-in-out ${fadeClass}`}
+                    className={`h-full w-full object-contain rounded-sm transition-opacity duration-500 ease-in-out ${fadeClass}`}
                     src={selectedImage}
                     alt="Selected"
                 />
             </div>
-            <div className="flex space-x-2">
+            <div className="flex gap-1 md:gap-2 overflow-x-auto w-full pb-2">
                 {images.map((image, index) => (
                     <img
                         key={index}
-                        className={`w-16 h-16 rounded-lg cursor-pointer transition-transform duration-300 ease-in-out transform ${
+                        className={`w-12 h-12 md:w-16 md:h-16 rounded-lg cursor-pointer transition-transform duration-300 ease-in-out transform flex-shrink-0 object-cover ${
                             selectedImage === image
                                 ? "border-2 border-blue-500 scale-110"
                                 : ""

@@ -7,6 +7,7 @@ const Cart = () => {
     const { userId } = useAuth();
     const { cartItems, removeFromCart, clearCart } = useCart();
 
+    console.log(cartItems);
     const handleBuyNow = (record) => {
         console.log("Buy Now clicked for:", record);
     };
