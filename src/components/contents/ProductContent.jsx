@@ -4,7 +4,8 @@ import Card from "../common/Card";
 import { message, Pagination } from "antd";
 import useFetchProducts from "../../hooks/useFetchProducts";
 import Loading from "../common/Loading";
-import useCart from "../../hooks/useCart";
+import { useAuth } from "../../contexts/AuthContext";
+import { useCart } from "../../contexts/CartContext";
 
 const banners = [
     {
@@ -22,7 +23,8 @@ const overlayTexts = ["Banner Title 1", "Banner Title 2"];
 function ProductContent() {
     const [currentPage, setCurrentPage] = useState(1);
     const { products, loading, error } = useFetchProducts();
-    const { addToCart, loading: cartLoading, error: cartError } = useCart();
+    const { addToCart } = useCart();
+    const { userId } = useAuth();
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -37,17 +39,19 @@ function ProductContent() {
     const handleAddToCart = async (product) => {
         try {
             await addToCart({
-                id: product.id,
-                userId: "user-id-placeholder",
-                productName: product.title,
+                id: crypto.randomUUID(),
+                userId,
                 productId: product.id,
+                productName: product.title,
                 productDescription: product.description,
+                imageUrl: product.imageUrl,
                 price: product.price,
                 addToCartAt: new Date().toISOString(),
             });
-            console.log(`Added product to cart: ${product.title}`);
+            message.success(`Added ${product.title} to cart`);
         } catch (error) {
             console.error("Failed to add product to cart", error);
+            message.error("Failed to add product to cart");
         }
     };
 
@@ -55,13 +59,8 @@ function ProductContent() {
         window.location.href = `/san-pham/${product.id}`;
     };
 
-    if (loading || cartLoading) return <Loading />;
-    if (error || cartError)
-        return (
-            <div>
-                Error loading products: {error?.message || cartError?.message}
-            </div>
-        );
+    if (loading) return <Loading />;
+    if (error) return <div>Error loading products: {error?.message}</div>;
 
     const { pageSize, totalProducts, products: productList } = products;
     const startIndex = (currentPage - 1) * pageSize;

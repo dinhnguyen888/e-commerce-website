@@ -13,7 +13,12 @@ export const AuthProvider = ({ children }) => {
 
     const decodeToken = (token) => {
         try {
-            return jwtDecode(token);
+            const decoded = jwtDecode(token);
+            return {
+                email: decoded.email,
+                userId: decoded.userId,
+                username: decoded.userName,
+            };
         } catch (error) {
             console.error("Invalid token:", error);
             return null;

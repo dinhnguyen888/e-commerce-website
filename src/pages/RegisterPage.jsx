@@ -1,14 +1,22 @@
 import AuthLayout from "../components/layout/AuthLayout";
 import GenericForm from "../components/common/GenericForm";
 import SocialLogin from "../components/common/SocialLogin";
+import { registerUser } from "../services/register.api";
+import toast from "react-hot-toast";
 
 const RegisterPage = () => {
-    const onFinish = (values) => {
-        console.log("Success:", values);
+    const onFinish = async (values) => {
+        try {
+            await registerUser(values);
+            window.location.href = "/dang-nhap";
+        } catch (error) {
+            toast.error("Failed to register! Please try again later.");
+            console.error("Registration failed:", error);
+        }
     };
 
-    const onFinishFailed = (errorInfo) => {
-        console.log("Failed:", errorInfo);
+    const onFinishFailed = () => {
+        toast.error("Please fill in all required fields!");
     };
 
     const fields = [
@@ -18,6 +26,13 @@ const RegisterPage = () => {
             type: "text",
             required: true,
             message: "Please input your email!",
+        },
+        {
+            label: "Name",
+            name: "name",
+            type: "text",
+            required: true,
+            message: "Please input your name!",
         },
         {
             label: "Password",

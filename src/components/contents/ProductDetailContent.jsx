@@ -3,14 +3,37 @@ import PropTypes from "prop-types";
 import Carousel from "../common/Carousel";
 import MainTitle from "../common/MainTitle";
 import CustomTable from "../common/CustomTable";
-import BuyNowButton from "../common/BuyNowButton";
 import RelativeThing from "../common/RelativeThing";
 import Loading from "../common/Loading";
 import useViewDetail from "../../hooks/useViewDetail";
+import { useCart } from "../../contexts/CartContext";
+import { useAuth } from "../../contexts/AuthContext";
+import { message } from "antd";
 
 const ProductDetailContent = ({ productId }) => {
     const { product, loading, error } = useViewDetail(productId);
+    const { addToCart } = useCart();
+    const { userId } = useAuth();
+
     console.log(product);
+    const handleAddToCart = async () => {
+        try {
+            await addToCart({
+                id: crypto.randomUUID(),
+                userId,
+                productId: product.id,
+                productName: product.title,
+                productDescription: product.description,
+                imageUrl: product.imageUrls[0], // Assuming the first image is the main image
+                price: product.price,
+                addToCartAt: new Date().toISOString(),
+            });
+            message.success(`Added ${product.title} to cart`);
+        } catch (error) {
+            console.error("Failed to add product to cart", error);
+            message.error("Failed to add product to cart");
+        }
+    };
 
     if (loading) return <Loading />;
     if (error) return <div>Error loading product: {error.message}</div>;
@@ -61,15 +84,19 @@ const ProductDetailContent = ({ productId }) => {
                         text={`Giá: ${product.price.toLocaleString()}đ`}
                     />
                     <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
-                        <BuyNowButton
-                            className={"text-white"}
-                            size={"large"}
-                            bgColor={"red"}
-                            color={"white"}
-                            productId={product.id}
-                        />
-                        <Button type="primary" className="lg:w-auto w-full">
-                            Thêm vào giỏ{" "}
+                        <Button
+                            type="primary"
+                            className="lg:w-auto w-full"
+                            onClick={() => {}}
+                        >
+                            Mua ngay
+                        </Button>
+                        <Button
+                            type="primary"
+                            className="lg:w-auto w-full"
+                            onClick={handleAddToCart}
+                        >
+                            Thêm vào giỏ
                         </Button>
                     </div>
                 </div>

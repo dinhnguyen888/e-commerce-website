@@ -1,28 +1,22 @@
-import { Table, Tooltip, Image, Space } from "antd";
+import { Table, Tooltip, Image, Space, Button } from "antd";
 import { FaDollarSign, FaTrashAlt } from "react-icons/fa";
-
-const sampleData = [
-    {
-        key: "1",
-        name: "Product 1dcgfdgfdg gdf kjlghfd kjhfgbkfdjlgbn khglfjhglkjh kdjgf dkdiulsjgfh dkjblds sklfk ",
-        price: "100000",
-        imageUrl: "https://placehold.co/600x400",
-    },
-    {
-        key: "2",
-        name: "Product 2",
-        price: "200",
-        imageUrl: "https://placehold.co/600x400",
-    },
-];
+import { useAuth } from "../../contexts/AuthContext";
+import { useCart } from "../../contexts/CartContext";
 
 const Cart = () => {
+    const { userId } = useAuth();
+    const { cartItems, removeFromCart, clearCart } = useCart();
+
     const handleBuyNow = (record) => {
         console.log("Buy Now clicked for:", record);
     };
 
-    const handleRemoveFromCart = (record) => {
-        console.log("Remove from Cart clicked for:", record);
+    const handleRemoveFromCart = async (record) => {
+        await removeFromCart(record.id);
+    };
+
+    const handleClearCart = async () => {
+        await clearCart(userId);
     };
 
     const columns = [
@@ -44,8 +38,8 @@ const Cart = () => {
         },
         {
             title: "Tên",
-            dataIndex: "name",
-            key: "name",
+            dataIndex: "productName",
+            key: "productName",
             width: 200,
             render: (text) => (
                 <Tooltip title={text}>
@@ -88,13 +82,31 @@ const Cart = () => {
     ];
 
     return (
-        <Table
-            columns={columns}
-            dataSource={sampleData}
-            pagination={false}
-            bordered
-            scroll={{ x: 600 }}
-        />
+        <>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "right",
+                    margin: "16px",
+                }}
+            >
+                <Button
+                    onClick={handleClearCart}
+                    type="primary"
+                    danger
+                    className="flex items-center justify-center"
+                >
+                    Clear Cart
+                </Button>
+            </div>
+            <Table
+                columns={columns}
+                dataSource={cartItems}
+                pagination={false}
+                bordered
+                scroll={{ x: 600 }}
+            />
+        </>
     );
 };
 

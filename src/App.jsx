@@ -7,25 +7,40 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import IntroductionPage from "./pages/IntroductionPage";
 import { useGoogleOneTapLogin } from "./hooks/useGoogleOneTapLogin";
+import { AuthProvider } from "./contexts/AuthContext";
+import { CartProvider } from "./contexts/CartContext";
+import { PaymentProvider } from "./contexts/PaymentContext";
 
 function App() {
     useGoogleOneTapLogin();
 
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/dang-nhap" element={<LoginPage />} />
-                <Route path="/dang-ky" element={<RegisterPage />} />
-                <Route path="/san-pham" element={<ProductPage />} />
-                <Route path="/gioi-thieu" element={<IntroductionPage />} />
-                <Route
-                    path="/san-pham/:productId"
-                    element={<ProductDetailPage />}
-                />
-                <Route path="/checkout/:id" element={<CheckoutPage />} />
-            </Routes>
-        </Router>
+        <AuthProvider>
+            <CartProvider>
+                <PaymentProvider>
+                    <Router>
+                        <Routes>
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/dang-nhap" element={<LoginPage />} />
+                            <Route path="/dang-ky" element={<RegisterPage />} />
+                            <Route path="/san-pham" element={<ProductPage />} />
+                            <Route
+                                path="/gioi-thieu"
+                                element={<IntroductionPage />}
+                            />
+                            <Route
+                                path="/san-pham/:productId"
+                                element={<ProductDetailPage />}
+                            />
+                            <Route
+                                path="/checkout/:id"
+                                element={<CheckoutPage />}
+                            />
+                        </Routes>
+                    </Router>
+                </PaymentProvider>
+            </CartProvider>
+        </AuthProvider>
     );
 }
 

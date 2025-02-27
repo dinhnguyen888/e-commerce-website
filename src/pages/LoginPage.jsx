@@ -4,6 +4,7 @@ import SocialLogin from "../components/common/SocialLogin";
 import RegisterLink from "../components/common/AuthLink";
 import { loginUser } from "../services/login.api";
 import { useAuth } from "../contexts/AuthContext";
+import toast from "react-hot-toast";
 
 const LoginPage = () => {
     const { login } = useAuth();
@@ -17,7 +18,7 @@ const LoginPage = () => {
             }
         } catch (error) {
             if (error.response && error.response.status === 401) {
-                alert("Vui lòng kiểm tra email hoặc mật khẩu.");
+                toast.error("Vui lòng kiểm tra email hoặc mật khẩu.");
             } else {
                 console.error("An unexpected error occurred:", error);
             }

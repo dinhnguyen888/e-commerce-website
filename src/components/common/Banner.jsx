@@ -12,7 +12,7 @@ const Banner = ({ images, overlayTexts }) => {
                     <img
                         src={image.src}
                         alt={image.alt}
-                        className="w-full h-auto object-cover"
+                        className="w-full h-full object-cover"
                     />
 
                     {/* understand html data */}

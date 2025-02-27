@@ -3,9 +3,10 @@ import { useState } from "react";
 import { useMenu } from "../../contexts/MenuContext";
 import useLogout from "../../hooks/useLogout";
 import Cart from "../common/Cart";
-import Orders from "../common/Orders";
+
 import Profile from "../common/Profile";
 import MenuNavbar from "../common/MenuNavbar";
+import PaymentBill from "../common/PaymentBill";
 
 export default function SlidingMenu() {
     const { isMenuOpen, toggleMenu } = useMenu();
@@ -21,8 +22,8 @@ export default function SlidingMenu() {
         switch (activeComponent) {
             case "Cart":
                 return <Cart />;
-            case "Orders":
-                return <Orders />;
+            case "PaymentBill":
+                return <PaymentBill />;
             case "Profile":
                 return <Profile />;
             default:
@@ -59,7 +60,8 @@ export default function SlidingMenu() {
                     backgroundColor: "#111827",
                     borderBottom: "1px solid #374151",
                 }}
-                width="45vw" // Set the width to 50% of the viewport width
+                closeIcon={<span style={{ color: "white" }}>X</span>} // Set the close button color to white
+                width={window.innerWidth < 768 ? "95vw" : "45vw"} // Set the width to 95% on mobile and 45% on desktop
             >
                 <MenuNavbar
                     activeComponent={activeComponent}

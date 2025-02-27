@@ -24,7 +24,7 @@ export default function MenuNavbar({ activeComponent, onMenuClick }) {
                 Giỏ hàng
             </Menu.Item>
             <Menu.Item
-                key="Orders"
+                key="PaymentBill"
                 icon={<UnorderedListOutlined />}
                 className="hover:bg-gray-700 hover:text-white"
             >
