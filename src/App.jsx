@@ -24,7 +24,10 @@ function App() {
                         <PaymentProvider>
                             <Routes>
                                 <Route path="/" element={<HomePage />} />
-                                <Route path="/login" element={<LoginPage />} />
+                                <Route
+                                    path="/dang-nhap"
+                                    element={<LoginPage />}
+                                />
                                 <Route
                                     path="/register"
                                     element={<RegisterPage />}

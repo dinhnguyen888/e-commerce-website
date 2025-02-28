@@ -24,12 +24,6 @@ function Header() {
                     />
                     <div className="flex flex-row items-center">
                         <SearchBox handleOnSearch={handleSearch} />
-                        <div
-                            className="flex flex-col items-center ml-1 cursor-pointer"
-                            onClick={() =>
-                                (window.location.href = "/dang-nhap")
-                            }
-                        ></div>
                     </div>
                 </div>
             </div>
