@@ -16,7 +16,7 @@ function Header() {
             <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-28">
                 <div className="flex justify-between items-center">
                     <Image
-                        src="\public\hutao-avatar.gif"
+                        src="hutao-avatar.gif"
                         alt="Logo"
                         width={40}
                         height={40}
