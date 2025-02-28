@@ -7,12 +7,12 @@ const Banner = ({ images }) => {
             {images.map((image, index) => (
                 <div
                     key={index}
-                    className="relative rounded-md overflow-hidden"
+                    className="relative rounded-md shadow-sm overflow-hidden"
                 >
                     <img
-                        src={image.src}
-                        alt={image.alt}
-                        className="w-full h-full object-cover"
+                        src={image.bannerUrl}
+                        alt={image.bannerName}
+                        className="w-full h-[300px] object-fit"
                     />
 
                     {/* understand html data
@@ -34,11 +34,11 @@ const Banner = ({ images }) => {
 Banner.propTypes = {
     images: PropTypes.arrayOf(
         PropTypes.shape({
-            src: PropTypes.string.isRequired,
-            alt: PropTypes.string.isRequired,
+            bannerUrl: PropTypes.string.isRequired,
+            bannerName: PropTypes.string.isRequired,
         })
     ).isRequired,
-    overlayTexts: PropTypes.arrayOf(PropTypes.string),
+    // overlayTexts: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default Banner;
