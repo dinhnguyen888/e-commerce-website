@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Banner from "../common/Banner";
 import Card from "../common/Card";
 import { message, Pagination } from "antd";
@@ -7,19 +7,8 @@ import Loading from "../common/Loading";
 import { useAuth } from "../../contexts/AuthContext";
 import { useCart } from "../../contexts/CartContext";
 import { usePayment } from "../../contexts/PaymentContext";
-
-const banners = [
-    {
-        src: "https://placehold.co/600x200",
-        alt: "Sample Banner 1",
-    },
-    {
-        src: "https://placehold.co/600x200",
-        alt: "Sample Banner 2",
-    },
-];
-
-const overlayTexts = ["Banner Title 1", "Banner Title 2"];
+import { getBanner } from "../../services/banner.get";
+import MainTitle from "../common/MainTitle";
 
 function ProductContent() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -27,6 +16,19 @@ function ProductContent() {
     const { addToCart } = useCart();
     const { userId } = useAuth();
     const { navigatePayment } = usePayment();
+    const [banners, setBanners] = useState([]);
+    useEffect(() => {
+        const fetchBanner = async () => {
+            try {
+                const banners = await getBanner();
+                console.log(banners);
+                setBanners(banners);
+            } catch (error) {
+                console.error("Failed to fetch banner", error);
+            }
+        };
+        fetchBanner();
+    }, []);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -73,12 +75,15 @@ function ProductContent() {
 
     return (
         <>
-            <div className="container mx-auto p-4 mt-11 lg:px-20">
+            <div className="container mx-auto p-4 mt-5 lg:px-20">
                 <div className="lg:">
-                    <Banner images={banners} overlayTexts={overlayTexts} />
+                    <Banner images={banners} />
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-7 px-5 lg:px-0 py-11 justify-items-center">
+                <MainTitle
+                    text="Web App"
+                    className={"text-balance uppercase my-7 font-semibold"}
+                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-7 px-5 lg:px-0 justify-items-center">
                     {currentProducts.map((card, index) => (
                         <Card
                             key={index}
