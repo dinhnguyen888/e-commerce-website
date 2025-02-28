@@ -2,14 +2,19 @@ import { Table, Tooltip, Image, Space, Button } from "antd";
 import { FaDollarSign, FaTrashAlt } from "react-icons/fa";
 import { useAuth } from "../../contexts/AuthContext";
 import { useCart } from "../../contexts/CartContext";
+import { usePayment } from "../../contexts/PaymentContext";
 
 const Cart = () => {
     const { userId } = useAuth();
     const { cartItems, removeFromCart, clearCart } = useCart();
+    const { navigatePayment } = usePayment();
 
     console.log(cartItems);
     const handleBuyNow = (record) => {
-        console.log("Buy Now clicked for:", record);
+        navigatePayment(record.id, {
+            productPay: record.productName,
+            productPrice: record.price,
+        });
     };
 
     const handleRemoveFromCart = async (record) => {
@@ -66,15 +71,19 @@ const Cart = () => {
             render: (_, record) => (
                 <Space size="middle">
                     <Tooltip title="Mua">
-                        <FaDollarSign
-                            className="cursor-pointer text-blue-500 text-lg"
+                        <Button
+                            type="link"
+                            icon={<FaDollarSign className="text-lg" />}
                             onClick={() => handleBuyNow(record)}
+                            className="text-blue-500 hover:text-blue-600 p-0 flex items-center"
                         />
                     </Tooltip>
                     <Tooltip title="Xóa">
-                        <FaTrashAlt
-                            className="cursor-pointer text-red-500 text-lg"
+                        <Button
+                            type="link"
+                            icon={<FaTrashAlt className="text-lg" />}
                             onClick={() => handleRemoveFromCart(record)}
+                            className="text-red-500 hover:text-red-600 p-0 flex items-center"
                         />
                     </Tooltip>
                 </Space>
