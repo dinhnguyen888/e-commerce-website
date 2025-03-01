@@ -38,15 +38,15 @@ function Footer() {
                             </li>
                             <li>
                                 <a
-                                    href="/do-an"
+                                    href="/san-pham"
                                     className="hover:text-blue-500"
                                 >
-                                    Đồ Án
+                                    Sản Phẩm
                                 </a>
                             </li>
                             <li>
                                 <a
-                                    href="/lien-he"
+                                    href="https://www.facebook.com/nguyen.inh.869154/?locale=vi_VN"
                                     className="hover:text-blue-500"
                                 >
                                     Liên Hệ

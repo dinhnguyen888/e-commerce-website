@@ -3,12 +3,7 @@ import classNames from "classnames";
 
 function MainTitle({ text, className }) {
     return (
-        <p
-            className={classNames(
-                "text-black lg:text-3xl text-2xl ",
-                className
-            )}
-        >
+        <p className={classNames("text-black lg:text-2xl text-xl ", className)}>
             {text}
         </p>
     );

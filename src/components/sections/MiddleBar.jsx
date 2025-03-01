@@ -15,9 +15,9 @@ function MiddleBar() {
             <Navbar
                 links={[
                     { href: "/", text: "Trang chủ" },
-                    { href: "/shop", text: "Phần mềm" },
-                    { href: "/shop", text: "Web App" },
-                    { href: "/about", text: "Tool & Data" },
+                    { href: "/danh-muc/phanmem", text: "Phần mềm" },
+                    { href: "/danh-muc/webapp", text: "Web App" },
+                    { href: "/danh-muc/tool", text: "Tool & Data" },
                     { href: "/gioi-thieu", text: "Giới thiệu" },
                     {
                         href: isLoggedIn ? null : "/dang-nhap",

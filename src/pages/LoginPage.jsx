@@ -3,11 +3,23 @@ import GenericForm from "../components/common/GenericForm";
 import SocialLogin from "../components/common/SocialLogin";
 import RegisterLink from "../components/common/AuthLink";
 import { loginUser } from "../services/login.api";
+
 import { useAuth } from "../contexts/AuthContext";
+
 import toast from "react-hot-toast";
 
 const LoginPage = () => {
     const { login } = useAuth();
+
+    const handleGoogleLogin = () => {
+        window.location.href =
+            "https://bettercalldinh.ddns.net/api/OAuth/google-login";
+    };
+
+    const handleGithubLogin = () => {
+        window.location.href =
+            "https://bettercalldinh.ddns.net/api/OAuth/github-login";
+    };
 
     const onFinish = async (values) => {
         try {
@@ -55,7 +67,10 @@ const LoginPage = () => {
                 onFinishFailed={onFinishFailed}
                 checkboxContent={"Remember me"}
             />
-            <SocialLogin />
+            <SocialLogin
+                onGoogleClick={handleGoogleLogin}
+                onGithubClick={handleGithubLogin}
+            />
 
             <RegisterLink />
         </AuthLayout>

@@ -19,7 +19,7 @@ const NewsPage = () => {
         try {
             const data = await getNews(currentPage, 6);
             setNews(data);
-            // Nếu số lượng items nhỏ hơn pageSize, nghĩa là đã hết data
+
             setHasMore(data.length === 6);
         } catch (error) {
             message.error("Không thể tải tin tức: " + error.message);
@@ -44,7 +44,6 @@ const NewsPage = () => {
         }
     };
 
-    // Chỉ hiển thị loading lần đầu tiên
     if (loading && news.length === 0) {
         return <Loading />;
     }

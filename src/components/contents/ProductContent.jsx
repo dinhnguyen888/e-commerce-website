@@ -1,27 +1,44 @@
 import { useState, useEffect } from "react";
 import Banner from "../common/Banner";
 import Card from "../common/Card";
-import { message, Pagination } from "antd";
-import useFetchProducts from "../../hooks/useFetchProducts";
+import { message } from "antd";
 import Loading from "../common/Loading";
 import { useAuth } from "../../contexts/AuthContext";
 import { useCart } from "../../contexts/CartContext";
 import { usePayment } from "../../contexts/PaymentContext";
+import { useProduct } from "../../contexts/ProductContext";
 import { getBanner } from "../../services/banner.get";
 import MainTitle from "../common/MainTitle";
 
+const SECTIONS = [
+    {
+        title: "Web App",
+        tag: "webapp",
+        limit: 2,
+    },
+    {
+        title: "Phần mềm Desktop",
+        tag: "phanmem",
+        limit: 4,
+    },
+    {
+        title: "Công cụ & Tiện ích",
+        tag: "tool",
+        limit: 3,
+    },
+];
+
 function ProductContent() {
-    const [currentPage, setCurrentPage] = useState(1);
-    const { products, loading, error } = useFetchProducts();
+    const { products, loading, fetchMultipleProducts } = useProduct();
     const { addToCart } = useCart();
     const { userId } = useAuth();
     const { navigatePayment } = usePayment();
     const [banners, setBanners] = useState([]);
+
     useEffect(() => {
         const fetchBanner = async () => {
             try {
                 const banners = await getBanner();
-                console.log(banners);
                 setBanners(banners);
             } catch (error) {
                 console.error("Failed to fetch banner", error);
@@ -30,10 +47,11 @@ function ProductContent() {
         fetchBanner();
     }, []);
 
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-        console.log(`Page changed to: ${page}`);
-    };
+    useEffect(() => {
+        fetchMultipleProducts(
+            SECTIONS.map(({ tag, limit }) => ({ tag, limit }))
+        );
+    }, []);
 
     const handleBuyClick = (product) => {
         navigatePayment(product.id, {
@@ -54,10 +72,10 @@ function ProductContent() {
                 price: product.price,
                 addToCartAt: new Date().toISOString(),
             });
-            message.success(`Added ${product.title} to cart`);
+            message.success(`Đã thêm ${product.title} vào giỏ hàng`);
         } catch (error) {
             console.error("Failed to add product to cart", error);
-            message.error("Failed to add product to cart");
+            message.error("Không thể thêm vào giỏ hàng");
         }
     };
 
@@ -65,53 +83,80 @@ function ProductContent() {
         window.location.href = `/san-pham/${product.id}`;
     };
 
-    if (loading) return <Loading />;
-    if (error) return <div>Error loading products: {error?.message}</div>;
+    const handleViewMore = (tag) => {
+        window.location.href = `/danh-muc/${tag}`;
+    };
 
-    const { pageSize, totalProducts, products: productList } = products;
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const currentProducts = productList.slice(startIndex, endIndex);
+    // Lọc sản phẩm theo tag
+    const getProductsByTag = (tag) => {
+        return products.filter((product) => product.tag === tag);
+    };
 
     return (
-        <>
-            <div className="container mx-auto p-4 mt-5 lg:px-20">
-                <div className="lg:">
-                    <Banner images={banners} />
-                </div>
-                <MainTitle
-                    text="Web App"
-                    className={"text-balance uppercase my-7 font-semibold"}
-                />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-7 px-5 lg:px-0 justify-items-center">
-                    {currentProducts.map((card, index) => (
-                        <Card
-                            key={index}
-                            imageUrl={card.imageUrl}
-                            title={card.title}
-                            description={card.description}
-                            onBuy={() => handleBuyClick(card)}
-                            onAddToCart={() => handleAddToCart(card)}
-                            onViewDetails={() => handleViewDetail(card)}
-                            price={card.price}
-                            tag={card.tag}
-                            rating={card.rating}
-                            postedDate={card.postedDate}
-                        />
-                    ))}
-                </div>
-
-                <div className="flex justify-center mt-4">
-                    <Pagination
-                        current={currentPage}
-                        pageSize={pageSize}
-                        total={totalProducts}
-                        onChange={handlePageChange}
-                        showQuickJumper
-                    />
-                </div>
+        <div className="container mx-auto p-4 mt-5 lg:px-20">
+            <div className="lg:">
+                <Banner images={banners} />
             </div>
-        </>
+
+            <div className="mt-8 space-y-12">
+                {SECTIONS.map((section) => {
+                    const sectionProducts = getProductsByTag(section.tag);
+
+                    return (
+                        <div key={section.tag} className="my-5">
+                            <div className="flex justify-between items-center my-11">
+                                <MainTitle
+                                    text={section.title}
+                                    className=" uppercase font-semibold m-0"
+                                />
+                                {sectionProducts.length > 0 && (
+                                    <span
+                                        onClick={() =>
+                                            handleViewMore(section.tag)
+                                        }
+                                        className="text-blue-600 hover:text-blue-800 cursor-pointer text-sm font-medium mr-2 hover:underline"
+                                    >
+                                        Xem thêm
+                                    </span>
+                                )}
+                            </div>
+                            {loading ? (
+                                <div className="flex justify-center">
+                                    <Loading />
+                                </div>
+                            ) : sectionProducts.length === 0 ? (
+                                <div className="text-center text-gray-500">
+                                    Không có sản phẩm nào trong danh mục này
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-7 px-5 lg:px-0 justify-items-center">
+                                    {sectionProducts.map((product) => (
+                                        <Card
+                                            key={product.id}
+                                            imageUrl={product.imageUrl}
+                                            title={product.title}
+                                            description={product.description}
+                                            onBuy={() =>
+                                                handleBuyClick(product)
+                                            }
+                                            onAddToCart={() =>
+                                                handleAddToCart(product)
+                                            }
+                                            onViewDetails={() =>
+                                                handleViewDetail(product)
+                                            }
+                                            price={product.price}
+                                            tag={product.tag}
+                                            postedDate={product.postedDate}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
     );
 }
 

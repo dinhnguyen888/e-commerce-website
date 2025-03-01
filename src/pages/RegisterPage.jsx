@@ -1,6 +1,5 @@
 import AuthLayout from "../components/layout/AuthLayout";
 import GenericForm from "../components/common/GenericForm";
-import SocialLogin from "../components/common/SocialLogin";
 import { registerUser } from "../services/register.api";
 import toast from "react-hot-toast";
 
@@ -58,7 +57,6 @@ const RegisterPage = () => {
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
             />
-            <SocialLogin />
             <p
                 className="text-left cursor-pointer text-red-500 "
                 onClick={() => (window.location.href = "/dang-nhap")}
