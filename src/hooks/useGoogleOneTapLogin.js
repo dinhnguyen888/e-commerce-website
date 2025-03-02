@@ -1,6 +1,7 @@
 import { useGoogleOneTapLogin as useGoogleOneTapLoginLib } from "react-google-one-tap-login";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
+import apiClient from "../services/APIConfig";
 
 export const useGoogleOneTapLogin = () => {
     const GOOGLE_API = import.meta.env.VITE_GOOGLE_API;
@@ -9,8 +10,8 @@ export const useGoogleOneTapLogin = () => {
         onSuccess: async (response) => {
             console.log("Google login success:", response);
             try {
-                const serverResponse = await axios.post(
-                    "https://bettercalldinh.ddns.net/api/OAuth/login-google",
+                const serverResponse = await apiClient.post(
+                    "OAuth/login-google-one-tap",
                     response,
                     {
                         headers: {
