@@ -50,8 +50,8 @@ function Card({
                 }
                 description={
                     <div className="text-gray-700 text-xs">
-                        <span className="font-semibold truncate block">
-                            {tag}
+                        <span className="font-semibold truncate text-blue-800 block">
+                            #{tag}
                         </span>
                         <p className="line-clamp-1 md:line-clamp-2 overflow-hidden text-ellipsis">
                             {description}

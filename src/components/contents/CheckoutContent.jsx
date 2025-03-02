@@ -19,14 +19,12 @@ const PaymentMethod = ({
             ${selected ? "ring-2 ring-blue-500 shadow-lg bg-blue-50" : ""}`}
         onClick={() => onSelect(value)}
     >
-        <div className="flex items-center justify-center space-x-3 relative">
-            <img
-                src={logo}
-                alt={name}
-                className={`w-10 h-10 transition-transform ${
-                    selected ? "scale-110" : ""
-                }`}
-            />
+        <div
+            className={`flex items-center justify-center space-x-3 relative transition-transform ${
+                selected ? "scale-110" : ""
+            }`}
+        >
+            <img src={logo} alt={name} className="w-10 h-10" />
             <span className={`font-medium ${selected ? "text-blue-600" : ""}`}>
                 {name}
             </span>

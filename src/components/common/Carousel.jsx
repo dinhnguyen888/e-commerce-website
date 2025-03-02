@@ -17,7 +17,7 @@ const Carousel = ({ images }) => {
         <div className="flex flex-col items-start justify-center space-y-2 md:space-y-4">
             <div className="relative w-full h-[200px] md:h-64">
                 <img
-                    className={`h-full w-full object-contain rounded-sm transition-opacity duration-500 ease-in-out ${fadeClass}`}
+                    className={`h-full w-full object-cover rounded-sm transition-opacity duration-500 ease-in-out ${fadeClass}`}
                     src={selectedImage}
                     alt="Selected"
                 />
@@ -26,9 +26,9 @@ const Carousel = ({ images }) => {
                 {images.map((image, index) => (
                     <img
                         key={index}
-                        className={`w-12 h-12 md:w-16 md:h-16 rounded-lg cursor-pointer transition-transform duration-300 ease-in-out transform flex-shrink-0 object-cover ${
+                        className={`w-12 h-12 md:w-16 md:h-16 rounded-lg cursor-pointer transition-transform duration-300 ease-in-out transform flex-shrink-0 object-fit ${
                             selectedImage === image
-                                ? "border-2 border-blue-500 scale-110"
+                                ? "border-2 border-blue-500"
                                 : ""
                         }`}
                         src={image}

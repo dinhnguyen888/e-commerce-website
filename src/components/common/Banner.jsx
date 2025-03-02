@@ -12,7 +12,7 @@ const Banner = ({ images }) => {
                     <img
                         src={image.bannerUrl}
                         alt={image.bannerName}
-                        className="w-full h-[300px] object-fit"
+                        className="w-full lg:h-[300px] h-[200px] object-fit"
                     />
 
                     {/* understand html data

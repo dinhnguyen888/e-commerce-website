@@ -17,6 +17,9 @@ import SoftwarePage from "./pages/SoftwarePage";
 import WebappPage from "./pages/WebappPage";
 import ToolPage from "./pages/ToolPage";
 import OAuthCallback from "./pages/auth/OAuthCallback";
+import PaymentSuccessPage from "./pages/payment/PaymentSuccessPage";
+import PaymentFailurePage from "./pages/payment/PaymentFailurePage";
+
 function App() {
     useGoogleOneTapLogin();
 
@@ -72,6 +75,14 @@ function App() {
                                     <Route
                                         path="/oauth/callback"
                                         element={<OAuthCallback />}
+                                    />
+                                    <Route
+                                        path="/thanh-toan-thanh-cong"
+                                        element={<PaymentSuccessPage />}
+                                    />
+                                    <Route
+                                        path="/thanh-toan-that-bai"
+                                        element={<PaymentFailurePage />}
                                     />
                                 </Routes>
                             </PaymentProvider>

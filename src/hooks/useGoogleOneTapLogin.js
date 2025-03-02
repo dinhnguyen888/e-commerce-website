@@ -1,5 +1,4 @@
 import { useGoogleOneTapLogin as useGoogleOneTapLoginLib } from "react-google-one-tap-login";
-import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import apiClient from "../services/APIConfig";
 

@@ -2,7 +2,7 @@ import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
 
 function Footer() {
     return (
-        <footer className="bg-gray-900 text-gray-300 py-12">
+        <footer className="bg-night-owl text-gray-300 py-12">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* About Us */}
@@ -46,7 +46,7 @@ function Footer() {
                             </li>
                             <li>
                                 <a
-                                    href="https://www.facebook.com/nguyen.inh.869154/?locale=vi_VN"
+                                    href="https://www.facebook.com/nguyenphucdinh.hosting/"
                                     className="hover:text-blue-500"
                                 >
                                     Liên Hệ

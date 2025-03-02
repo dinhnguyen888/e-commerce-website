@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 const paymentMethods = [
     {
         value: "VNPAY",
-        name: "Thanh toán qua VNPAY",
+        name: "VNPAY",
         logo: "/vnpay-logo.webp",
         isSandboxEnv: true,
     },
@@ -21,14 +21,14 @@ const paymentMethods = [
     },
     {
         value: "MOMO",
-        name: "Ví MoMo",
+        name: "MoMo",
         logo: "/momo-logo.png",
         isSandboxEnv: true,
     },
     {
         value: "PAYPAL",
-        name: "PayPal",
-        logo: "/paypal-logo.png",
+        name: "Ví điện tử PayPal",
+        logo: "/paypal-logo.svg",
     },
 ];
 
