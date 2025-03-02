@@ -8,16 +8,7 @@ import BaseLayout from "../components/layout/BaseLayout";
 import MiddleBar from "../components/sections/MiddleBar";
 import Body from "../components/sections/Body";
 import Filter from "../components/common/Filter";
-const sampleFilters = [
-    { label: "Đồ án mới nhất", link: "#category1" },
-    { label: "Tool mới nhất", link: "#category2" },
-    { label: "Đồ án ASP.Net", link: "#category3" },
-    { label: "Đồ án ASP.Net Core", link: "#category4" },
-    { label: "Acc ref Facebook", link: "#category5" },
-    { label: "kèo Airdrop", link: "#category6" },
-    { label: "key window bản quyền", link: "#category77" },
-    { label: "Iso ghost window 11 ", link: "#category8" },
-];
+
 function SearchPage() {
     const [searchParams] = useSearchParams();
     const keyword = searchParams.get("keyword") || "";
@@ -58,7 +49,7 @@ function SearchPage() {
                         keyword={keyword}
                     />
                 }
-                Sidebar={<Filter filters={sampleFilters} />}
+                Sidebar={<Filter />}
             />
         </BaseLayout>
     );

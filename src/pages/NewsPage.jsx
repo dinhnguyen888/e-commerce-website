@@ -3,6 +3,10 @@ import { getNews } from "../services/news.get";
 import NewsContent from "../components/contents/NewsContent";
 import Loading from "../components/common/Loading";
 import { message } from "antd";
+import Body from "../components/sections/Body";
+import MiddleBar from "../components/sections/MiddleBar";
+import BaseLayout from "../components/layout/BaseLayout";
+import Filter from "../components/common/Filter";
 
 const NewsPage = () => {
     const [news, setNews] = useState([]);
@@ -49,15 +53,23 @@ const NewsPage = () => {
     }
 
     return (
-        <NewsContent
-            news={news}
-            onViewDetails={handleViewDetails}
-            currentPage={currentPage}
-            onPrevPage={handlePrevPage}
-            onNextPage={handleNextPage}
-            hasMore={hasMore}
-            loading={loading}
-        />
+        <BaseLayout>
+            <MiddleBar />
+            <Body
+                Content={
+                    <NewsContent
+                        news={news}
+                        onViewDetails={handleViewDetails}
+                        currentPage={currentPage}
+                        onPrevPage={handlePrevPage}
+                        onNextPage={handleNextPage}
+                        hasMore={hasMore}
+                        loading={loading}
+                    />
+                }
+                Sidebar={<Filter />}
+            />
+        </BaseLayout>
     );
 };
 

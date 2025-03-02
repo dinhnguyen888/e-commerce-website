@@ -19,6 +19,9 @@ import ToolPage from "./pages/ToolPage";
 import OAuthCallback from "./pages/auth/OAuthCallback";
 import PaymentSuccessPage from "./pages/payment/PaymentSuccessPage";
 import PaymentFailurePage from "./pages/payment/PaymentFailurePage";
+import ArticlePage from "./pages/ArticlePage";
+import NewsPage from "./pages/NewsPage";
+import FreePage from "./pages/FreePage";
 
 function App() {
     useGoogleOneTapLogin();
@@ -83,6 +86,18 @@ function App() {
                                     <Route
                                         path="/thanh-toan-that-bai"
                                         element={<PaymentFailurePage />}
+                                    />
+                                    <Route
+                                        path="/bai-viet"
+                                        element={<ArticlePage />}
+                                    />
+                                    <Route
+                                        path="/tin-tuc"
+                                        element={<NewsPage />}
+                                    />
+                                    <Route
+                                        path="danh-muc/free"
+                                        element={<FreePage />}
                                     />
                                 </Routes>
                             </PaymentProvider>

@@ -1,7 +1,40 @@
 import PropTypes from "prop-types";
 import { Tag } from "antd";
-
-function Filter({ filters }) {
+const filters = [
+    {
+        label: "Phần mềm mới nhất",
+        link: "/danh-muc/phanmem",
+    },
+    {
+        label: "Website & App mới nhất",
+        link: "/danh-muc/webapp",
+    },
+    {
+        label: "Các Tool % Extension khả dụng",
+        link: "/danh-muc/tool",
+    },
+    {
+        label: "Phần mềm Miễn phí",
+        link: "/danh-muc/free",
+    },
+    {
+        label: "Tất cả sản phẩm",
+        link: "/san-pham",
+    },
+    {
+        label: "Tất cả bài viết",
+        link: "/bai-viet",
+    },
+    {
+        label: "Liên hệ",
+        link: "https://www.facebook.com/nguyenphucdinh.hosting/",
+    },
+    {
+        label: "Tin tức mới nhất về công nghệ",
+        link: "/tin-tuc",
+    },
+];
+function Filter() {
     return (
         <div className="p-2">
             <p className="text-lg font-sans font-semibold text-gray-600 py-4">
