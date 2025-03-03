@@ -29,6 +29,11 @@ const PaymentBill = () => {
             key: "productPay",
         },
         {
+            title: "Trạng thái",
+            dataIndex: "paymentStatus",
+            key: "paymentStatus",
+        },
+        {
             title: "Phương thức thanh toán",
             dataIndex: "paymentGateway",
             key: "paymentGateway",
