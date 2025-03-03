@@ -32,6 +32,11 @@ const PaymentBill = () => {
             title: "Trạng thái",
             dataIndex: "paymentStatus",
             key: "paymentStatus",
+            render: (status) => (
+                <Tag color={status ? "green" : "red"}>
+                    {status ? "Thanh toán thành công" : "Thanh toán thất bại"}
+                </Tag>
+            ),
         },
         {
             title: "Phương thức thanh toán",
