@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { getProductsByTag as getProductsByTagService } from "../services/product.getByTag";
 import { getMultipleProductsByTags } from "../services/product.getMultiple";
@@ -33,22 +33,34 @@ export const ProductProvider = ({ children }) => {
         }
     };
 
-    const getProductsByTag = async (tag, page = 1, pageSize = 4) => {
-        setLoading(true);
-        try {
-            const response = await getProductsByTagService(tag, page, pageSize);
-            if (response && response.products) {
-                setProducts(response.products);
+    const getProductsByTag = useCallback(
+        async (tag, page = 1, pageSize = 4) => {
+            setLoading(true);
+            try {
+                const response = await getProductsByTagService(
+                    tag,
+                    page,
+                    pageSize
+                );
+                if (response?.products) {
+                    setProducts((prevProducts) =>
+                        JSON.stringify(prevProducts) ===
+                        JSON.stringify(response.products)
+                            ? prevProducts
+                            : response.products
+                    );
+                }
+                return response;
+            } catch (error) {
+                console.error("Error fetching products by tag:", error);
+                message.error("Không thể tải sản phẩm: " + error.message);
+                throw error;
+            } finally {
+                setLoading(false);
             }
-            return response;
-        } catch (error) {
-            console.error("Error fetching products by tag:", error);
-            message.error("Không thể tải sản phẩm: " + error.message);
-            throw error;
-        } finally {
-            setLoading(false);
-        }
-    };
+        },
+        []
+    );
 
     const value = {
         products,

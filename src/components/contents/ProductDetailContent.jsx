@@ -11,14 +11,42 @@ import { useAuth } from "../../contexts/AuthContext";
 import { message } from "antd";
 import { usePayment } from "../../contexts/PaymentContext";
 import ProductComment from "../ProductComment";
-
+import { useProduct } from "../../contexts/ProductContext";
+import { useEffect, useState } from "react";
 const ProductDetailContent = ({ productId }) => {
     const { product, loading, error } = useViewDetail(productId);
     const { addToCart } = useCart();
     const { userId, username } = useAuth();
     const { navigatePayment } = usePayment();
 
-    console.log(product);
+    const { getProductsByTag } = useProduct();
+    const [relatedProducts, setRelatedProducts] = useState([]);
+
+    useEffect(() => {
+        if (!product?.tag) return;
+
+        let isMounted = true;
+
+        const fetchRelatedProducts = async () => {
+            if (!product?.tag || !product?.id) return;
+
+            try {
+                const response = await getProductsByTag(product.tag, 1, 3);
+                console.log(response);
+
+                if (isMounted && response?.products) {
+                    const filteredProducts = response.products.filter(
+                        (p) => p.id !== product.id
+                    );
+                    setRelatedProducts(filteredProducts);
+                }
+            } catch (error) {
+                console.error("Failed to fetch related products", error);
+            }
+        };
+
+        fetchRelatedProducts();
+    }, [product?.tag, getProductsByTag]);
     const handleAddToCart = async () => {
         try {
             await addToCart({
@@ -56,26 +84,8 @@ const ProductDetailContent = ({ productId }) => {
                 "Công nghệ sử dụng": product.technologyUsed,
             },
         ],
-        relatedItems: [
-            {
-                image: "https://placehold.co/240x240.png",
-                title: "Related Product 1",
-                price: "100,000đ",
-            },
-            {
-                image: "https://placehold.co/240x240.png",
-                title: "Related Product 2",
-                price: "200,000đ",
-            },
-            {
-                image: "https://placehold.co/240x240.png",
-                title: "Related Product 3",
-                price: "300,000đ",
-            },
-        ],
     };
 
-    // Tạo đối tượng currentUser từ thông tin auth
     const currentUser = {
         id: userId,
         name: username || "Anonymous User",
@@ -139,7 +149,7 @@ const ProductDetailContent = ({ productId }) => {
                 text="Sản phẩm liên quan"
                 className="font-bold text-xl text-gray-900"
             />
-            <RelativeThing items={data.relatedItems} />
+            <RelativeThing items={relatedProducts} />
             <ProductComment pageId={product.id} currentUser={currentUser} />
         </div>
     );

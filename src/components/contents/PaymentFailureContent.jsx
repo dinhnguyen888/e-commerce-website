@@ -36,9 +36,8 @@ const PaymentFailureContent = () => {
                     <Button
                         key="contact"
                         onClick={() =>
-                            navigate(
-                                "https://www.facebook.com/nguyenphucdinh.hosting/"
-                            )
+                            (window.location.href =
+                                "https://www.facebook.com/nguyenphucdinh.hosting/")
                         }
                     >
                         Liên hệ hỗ trợ

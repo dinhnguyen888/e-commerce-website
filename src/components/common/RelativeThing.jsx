@@ -10,13 +10,16 @@ const RelativeThing = ({ items }) => {
                         key={index}
                         hoverable
                         className="rounded-sm overflow-hidden border-gray-500 hover:shadow-sm transition-shadow"
+                        onClick={() =>
+                            (window.location.href = `/san-pham/${item.id}`)
+                        }
                     >
                         <div className="flex p-0 ">
                             {/* Bên trái: Hình ảnh tràn hết */}
                             <div className="w-1/3">
                                 <img
                                     alt={item.title}
-                                    src={item.image}
+                                    src={item.imageUrl}
                                     className="w-full h-full object-cover"
                                 />
                             </div>
@@ -51,7 +54,7 @@ const RelativeThing = ({ items }) => {
 RelativeThing.propTypes = {
     items: PropTypes.arrayOf(
         PropTypes.shape({
-            image: PropTypes.string.isRequired,
+            imageUrl: PropTypes.string.isRequired,
             title: PropTypes.string.isRequired,
             price: PropTypes.string,
         })
