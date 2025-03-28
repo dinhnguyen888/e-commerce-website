@@ -29,6 +29,7 @@ const paymentMethods = [
         value: "PAYPAL",
         name: "Ví điện tử PayPal",
         logo: "/paypal-logo.svg",
+        isSandboxEnv: true,
     },
 ];
 
@@ -88,6 +89,29 @@ const CheckoutPage = () => {
                     loading={loading}
                     paymentMethods={paymentMethods}
                 />
+                <h2 className="text-2xl font-bold my-7 text-center">
+                    Lưu ý !!
+                </h2>
+                <div className="text-center text-lg">
+                    {" "}
+                    <p className="text-red-600 font-bold">
+                        Tất cả các payment Gateway ở trên (trừ Payos do Payos
+                        không có môi trường sandbox) đều chạy ở môi trường
+                        sandbox
+                    </p>
+                    <div className="text-left mx-auto max-w-3xl mt-4 font-bold">
+                        <p>
+                            Đối với MOMO do là API key dùng chung nên đôi lúc
+                            khi ấn xác nhận thanh toán sẽ bị lỗi, mong anh/chị
+                            bỏ qua ạ!!!
+                        </p>
+                        <p>
+                            Đối với Paypal tài khoản và mật khẩu dùng để test:
+                        </p>
+                        <p>Email: sb-vqd2937877603@personal.example.com</p>
+                        <p>Pass: !M*iXKg4</p>
+                    </div>
+                </div>
             </div>
         </BaseLayout>
     );
