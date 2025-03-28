@@ -9,6 +9,7 @@
 - **Xác Thực**
     - Đăng nhập và đăng ký người dùng
     - Tích hợp đăng nhập Google One-tap
+    - Đăng nhập bằng Google, Github
     - Xác thực dựa trên JWT
 - **Quản Lý Sản Phẩm**
     - Danh sách và tìm kiếm sản phẩm
@@ -24,7 +25,6 @@
     - Trang giới thiệu sản phẩm
 - **Trải Nghiệm Người Dùng**
     - Thiết kế tương thích đa thiết bị
-    - Thông báo thời gian thực
     - Chức năng tìm kiếm
 
 ## Công Nghệ Sử Dụng
@@ -35,7 +35,7 @@
     - Ant Design (antd)
     - TailwindCSS
     - React Icons
-- **Quản Lý State**: Zustand
+- **Quản Lý State**: ContextAPI
 - **Định Tuyến**: React Router DOM v7
 - **HTTP Client**: Axios
 - **Xác Thực**: JWT + Google One-tap Login

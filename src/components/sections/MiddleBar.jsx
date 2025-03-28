@@ -18,7 +18,10 @@ function MiddleBar() {
                     { href: "/danh-muc/phanmem", text: "Phần mềm" },
                     { href: "/danh-muc/webapp", text: "Web App" },
                     { href: "/danh-muc/tool", text: "Tool & Data" },
-                    { href: "/gioi-thieu", text: "Giới thiệu" },
+                    {
+                        href: "https://github.com/dinhnguyen888",
+                        text: "Giới thiệu",
+                    },
                     {
                         href: isLoggedIn ? null : "/dang-nhap",
                         text: isLoggedIn ? "Menu ☰" : "Đăng nhập🔑",
