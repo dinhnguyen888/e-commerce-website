@@ -27,7 +27,7 @@ const filters = [
     },
     {
         label: "Liên hệ",
-        link: "https://www.facebook.com/nguyenphucdinh.hosting/",
+        link: "https://www.facebook.com/nguyenphucdinh89/",
     },
     {
         label: "Tin tức mới nhất về công nghệ",

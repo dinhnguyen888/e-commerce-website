@@ -46,7 +46,7 @@ function Footer() {
                             </li>
                             <li>
                                 <a
-                                    href="https://www.facebook.com/nguyenphucdinh.hosting/"
+                                    href="https://www.facebook.com/nguyenphucdinh89/"
                                     className="hover:text-blue-500"
                                 >
                                     Liên Hệ
